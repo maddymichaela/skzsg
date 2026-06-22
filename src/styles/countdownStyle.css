@@ -31,8 +31,7 @@
  .countdown-shell {
      width: min(980px, 100%);
      display: grid;
-     margin-top: 20px;
-     gap: 24px;
+     gap: 18px;
  }
 
  .venue,
@@ -58,7 +57,7 @@
 
  .venue {
      color: #fff;
-     font-size: clamp(1.25rem, 3vw, 2rem);
+     font-size: clamp(1.25rem, 3vw, 1.5rem);
      font-weight: 700;
  }
 
@@ -96,9 +95,12 @@
  .countdown-card {
      display: flex;
      flex-flow: column wrap;
+     align-content: center;
+     justify-content: center;
+
      gap: 18px;
      border-radius: 8px;
-     padding: clamp(18px, 4vw, 34px);
+     padding: clamp(18px, 4vw, 14px)
  }
 
  .status {
