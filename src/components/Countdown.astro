@@ -1,0 +1,119 @@
+---
+import '../styles/countdownStyle.css';
+import logo from '../assets/skz_sg_logo.png';
+import headerLogo from '../assets/logo_header_transparent.png';
+
+const tour = {
+city: 'Singapore',
+venue: 'Singapore Indoor Stadium',
+country: 'SG',
+timezone: 'Asia/Singapore',
+dates: ['2027-03-06', '2027-03-07'],
+};
+
+const formatter = new Intl.DateTimeFormat('en-SG', {
+weekday: 'long',
+day: 'numeric',
+month: 'long',
+year: 'numeric',
+hour: 'numeric',
+minute: '2-digit',
+timeZone: tour.timezone,
+timeZoneName: 'short',
+});
+---
+
+<main class="countdown-page">
+    <nav>
+        <img src={logo.src} alt="Stray Kids SG" class="logo">
+    </nav>
+    <section class="countdown-shell" aria-labelledby="countdown-title">
+        <h1 id="countdown-title" title="RUN IT">
+            <img src={headerLogo.src} alt="RUN IT">
+        </h1>
+        <p class="venue">{tour.city}</p>
+
+        <div class="date-tabs" aria-label="Singapore tour dates">
+
+            <p class="date-pill">
+                {tour.dates.map((date) => (
+                <time datetime={date}>{formatter.format(new Date(date))}</time>
+                ))}
+            </p>
+        </div>
+
+        <div class="countdown-card" data-countdown data-dates={JSON.stringify(tour.dates)}>
+            <div class="timer" aria-live="polite">
+                <div>
+                    <strong data-days>000</strong>
+                    <span>Days</span>
+                </div>
+                <div>
+                    <strong data-hours>00</strong>
+                    <span>Hours</span>
+                </div>
+                <div>
+                    <strong data-minutes>00</strong>
+                    <span>Minutes</span>
+                </div>
+                <div>
+                    <strong data-seconds>00</strong>
+                    <span>Seconds</span>
+                </div>
+            </div>
+            <p class="local-time">
+                Timezone: <span>{tour.timezone}</span>
+            </p>
+        </div>
+    </section>
+</main>
+
+<script>
+    const countdown = document.querySelector('[data-countdown]');
+
+    if (countdown instanceof HTMLElement) {
+        const dates = JSON.parse(countdown.dataset.dates ?? '[]')
+            .map((date) => new Date(date))
+            .filter((date) => !Number.isNaN(date.getTime()));
+
+        const status = countdown.querySelector('[data-status]');
+        const days = countdown.querySelector('[data-days]');
+        const hours = countdown.querySelector('[data-hours]');
+        const minutes = countdown.querySelector('[data-minutes]');
+        const seconds = countdown.querySelector('[data-seconds]');
+
+        const setText = (element, value) => {
+            if (element) element.textContent = value;
+        };
+
+        const updateCountdown = () => {
+            const now = new Date();
+            const nextIndex = dates.findIndex((date) => date.getTime() > now.getTime());
+
+            if (nextIndex === -1) {
+                setText(status, 'Both Singapore shows have started');
+                setText(days, '000');
+                setText(hours, '00');
+                setText(minutes, '00');
+                setText(seconds, '00');
+                return;
+            }
+
+            const difference = dates[nextIndex].getTime() - now.getTime();
+            const totalSeconds = Math.floor(difference / 1000);
+            const dayValue = Math.floor(totalSeconds / 86400);
+            const hourValue = Math.floor((totalSeconds % 86400) / 3600);
+            const minuteValue = Math.floor((totalSeconds % 3600) / 60);
+            const secondValue = totalSeconds % 60;
+
+            setText(status, `Counting down to Night ${nextIndex + 1}`);
+            setText(days, String(dayValue).padStart(3, '0'));
+            setText(hours, String(hourValue).padStart(2, '0'));
+            setText(minutes, String(minuteValue).padStart(2, '0'));
+            setText(seconds, String(secondValue).padStart(2, '0'));
+        };
+
+        updateCountdown();
+        window.setInterval(updateCountdown, 1000);
+    }
+</script>
