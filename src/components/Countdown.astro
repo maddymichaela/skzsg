@@ -3,33 +3,33 @@ import '../styles/countdown.css';
 import headerLogo from '../assets/logo_header_with_world_tour.png';
 
 const tour = {
-    city: 'Singapore',
-    venue: 'Singapore Indoor Stadium',
-    country: 'SG',
-    timezone: 'Asia/Singapore',
-    dates: ['2027-03-06T18:00:00+08:00', '2027-03-07T17:00:00+08:00'],
+city: 'Singapore',
+venue: 'Singapore Indoor Stadium',
+country: 'SG',
+timezone: 'Asia/Singapore',
+dates: ['2027-03-06T18:00:00+08:00', '2027-03-07T17:00:00+08:00'],
 };
 
 const formatter = new Intl.DateTimeFormat('en-SG', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    timeZone: tour.timezone,
+weekday: 'long',
+day: 'numeric',
+month: 'long',
+year: 'numeric',
+timeZone: tour.timezone,
 });
 ---
 
 <main class="countdown-page">
     <section class="countdown-shell" aria-labelledby="countdown-title">
         <h1 id="countdown-title" title="RUN IT">
-            <img src={headerLogo.src} alt="RUN IT">
+            <img class="static-glitch" src={headerLogo.src} alt="RUN IT">
         </h1>
         <p class="venue">{tour.city}</p>
 
         <div class="date-tabs" aria-label="Singapore tour dates">
             <p class="date-pill">
                 {tour.dates.map((date) => (
-                    <time datetime={date}>{formatter.format(new Date(date))}</time>
+                <time datetime={date}>{formatter.format(new Date(date))}</time>
                 ))}
             </p>
         </div>

@@ -1,154 +1,193 @@
- .countdown-page {
-     height: 100dvh;
-     display: grid;
-     place-items: center center;
-     padding: 40px 18px;
-     overflow: hidden;
-     color: #fff;
- }
+.countdown-page {
+    height: 100dvh;
+    display: grid;
+    place-items: center center;
+    padding: 40px 18px;
+    overflow: hidden;
+    color: #fff;
+}
 
- .countdown-shell {
-     width: min(980px, 100%);
-     max-height: 100%;
-     display: grid;
-     gap: 6px;
-     align-content: start;
- }
+.countdown-shell {
+    width: min(980px, 100%);
+    max-height: 100%;
+    display: grid;
+    gap: 6px;
+    align-content: start;
+}
 
- .venue,
- .status,
- .local-time,
- .date-pill {
-     margin: 0;
-     text-align: center;
- }
+.venue,
+.status,
+.local-time,
+.date-pill {
+    margin: 0;
+    text-align: center;
+}
 
- h1 {
-     margin: 0;
-     font-size: clamp(4rem, 14vw, 10rem);
-     line-height: 0.82;
-     letter-spacing: 0;
-     text-transform: uppercase;
-     text-align: center;
- }
+h1 {
+    margin: 0;
+    font-size: clamp(4rem, 14vw, 10rem);
+    line-height: 0.82;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    text-align: center;
+}
 
- h1 img {
-     max-width: 100%;
-     width: 70%;
-     margin-bottom: -35px;
- }
+h1 img {
+    max-width: 100%;
+    width: 70%;
+    margin-bottom: -30px;
+}
 
- .venue {
-     color: #fff;
-     font-size: clamp(1.25rem, 3vw, 1.5rem);
-     font-weight: 700;
- }
+.venue {
+    color: #fff;
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-weight: 700;
+}
 
- .date-tabs {
-     text-align: center;
-     gap: 12px;
- }
+.date-tabs {
+    text-align: center;
+    gap: 12px;
+}
 
 
- .date-pill {
-     display: grid;
-     gap: 6px;
-     border-radius: 8px;
-     padding: 16px;
- }
+.date-pill {
+    display: grid;
+    gap: 6px;
+    border-radius: 8px;
+    padding: 16px;
+}
 
- .date-pill span,
- .local-time span {
-     color: #fff;
-     font-weight: 800;
- }
+.date-pill span,
+.local-time span {
+    color: #fff;
+    font-weight: 800;
+}
 
- .date-pill time {
-     color: #fff;
-     font-size: 1rem;
-     font-weight: 700;
- }
+.date-pill time {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+}
 
- .countdown-card {
-     display: flex;
-     flex-flow: column wrap;
-     align-content: center;
-     justify-content: center;
+.countdown-card {
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+    justify-content: center;
 
-     gap: 18px;
-     border-radius: 8px;
-     padding: clamp(18px, 4vw, 14px);
-     padding-top: 0;
- }
+    gap: 18px;
+    border-radius: 8px;
+    padding: clamp(18px, 4vw, 14px);
+    padding-top: 0;
+}
 
- .status {
-     color: #fff;
-     font-size: 1rem;
-     font-weight: 800;
-     text-transform: uppercase;
- }
+.status {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
 
- .timer {
-     display: grid;
-     grid-template-columns: repeat(4, minmax(0, 1fr));
-     gap: 10px;
- }
+.timer {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
 
- .timer div {
-     min-width: 0;
-     display: flex;
-     flex-flow: column wrap;
-     gap: 8px;
-     padding: 18px 10px;
-     border-radius: 8px;
-     /* background: rgba(255, 248, 237, 0.1); */
-     text-align: center;
- }
+.timer div {
+    min-width: 0;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 8px;
+    padding: 18px 10px;
+    border-radius: 8px;
+    /* background: rgba(255, 248, 237, 0.1); */
+    text-align: center;
+}
 
- .timer strong {
-     font-size: clamp(2rem, 8vw, 4rem);
-     line-height: 0.9;
-     font-variant-numeric: tabular-nums;
- }
+.timer strong {
+    font-size: clamp(2rem, 8vw, 4rem);
+    line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+}
 
- .timer span {
-     color: #fff;
-     font-size: 0.78rem;
-     font-weight: 800;
-     text-transform: uppercase;
- }
+.timer span {
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
 
- .local-time {
-     color: #fff;
-     font-size: 0.85rem;
-     text-align: center;
- }
+.local-time {
+    color: #fff;
+    font-size: 0.85rem;
+    text-align: center;
+}
 
- @media (max-width: 700px) {
-     .countdown-page {
-         padding: 24px 14px;
-     }
+@media (max-width: 700px) {
+    .countdown-page {
+        padding: 24px 14px;
+    }
 
-     nav {
-         padding-left: 5px;
-     }
+    nav {
+        padding-left: 5px;
+    }
 
-     h1 img {
-         margin-bottom: -5px;
-         width: 95%;
-     }
+    h1 img {
+        margin-bottom: -5px;
+        width: 95%;
+    }
 
-     /* .date-tabs,
+    /* .date-tabs,
         .timer {
             grid-template-columns: 1fr;
         } */
 
-     .timer div {
-         align-items: center;
-         text-align: center;
-     }
+    .timer div {
+        align-items: center;
+        text-align: center;
+    }
 
-     .timer span {
-         padding-bottom: 4px;
-     }
- }
+    .timer span {
+        padding-bottom: 4px;
+    }
+}
+
+/* animation */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1 {
+    animation: fadeUp 600ms ease both;
+}
+
+.venue {
+    animation: fadeUp 600ms ease 120ms both;
+}
+
+.date-tabs {
+    animation: fadeUp 600ms ease 220ms both;
+}
+
+.countdown-card {
+    animation: fadeUp 600ms ease 320ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
