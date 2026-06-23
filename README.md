@@ -1,4 +1,4 @@
-# Astro Starter Kit: Basics
+<!-- # Astro Starter Kit: Basics
 
 ```sh
 npm create astro@latest -- --template basics
@@ -43,4 +43,75 @@ All commands are run from the root of the project, from a terminal:
 
 ## 👀 Want to learn more?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat). -->
+
+# Stray Kids Singapore
+
+A small Astro site for the Stray Kids `RUN IT` World Tour Singapore stop (6 & 7 March 2027).
+
+Socials:
+<https://skzsg.netlify.app/>
+<https://x.com/SKZ_SG>
+<https://t.me/straykidsingapore>
+
+## Features
+
+- Countdown to the Singapore concert dates
+- Responsive landing page
+- Fixed nav and footer
+- Social links for X, Telegram, and email
+- Custom background and tour artwork
+- Google Font: Oswald
+
+## Tech Stack
+
+- Astro 7
+- HTML/CSS
+- JavaScript countdown timer
+- Netlify hosting
+
+## Requirements
+
+Node.js `>=22.12.0`
+
+Check your version:
+
+```sh
+node -v
+```
+
+## Getting Started
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the local dev server:
+
+```bash
+npm run dev
+```
+
+Open:
+
+<http://localhost:4321>
+
+## Project Structure
+
+src/
+├── assets/
+├── components/
+│   ├── Countdown.astro
+│   ├── Footer.astro
+│   └── Nav.astro
+├── layouts/
+│   └── Layout.astro
+├── pages/
+│   └── index.astro
+└── styles/
+    ├── countdown.css
+    ├── footer.css
+    ├── layout.css
+    └── nav.css

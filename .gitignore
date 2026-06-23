@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# i don't need these reference files....? 
+CLAUDE.md
+AGENTS.md
