@@ -1,29 +1,25 @@
 ---
-import '../styles/countdownStyle.css';
-import logo from '../assets/skz_sg_logo.png';
+import '../styles/countdown.css';
 import headerLogo from '../assets/logo_header_with_world_tour.png';
 
 const tour = {
-city: 'Singapore',
-venue: 'Singapore Indoor Stadium',
-country: 'SG',
-timezone: 'Asia/Singapore',
-dates: ['2027-03-06', '2027-03-07'],
+    city: 'Singapore',
+    venue: 'Singapore Indoor Stadium',
+    country: 'SG',
+    timezone: 'Asia/Singapore',
+    dates: ['2027-03-06T18:00:00+08:00', '2027-03-07T17:00:00+08:00'],
 };
 
 const formatter = new Intl.DateTimeFormat('en-SG', {
-weekday: 'long',
-day: 'numeric',
-month: 'long',
-year: 'numeric',
-timeZone: tour.timezone,
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: tour.timezone,
 });
 ---
 
 <main class="countdown-page">
-    <nav>
-        <img src={logo.src} alt="Stray Kids SG" class="logo">
-    </nav>
     <section class="countdown-shell" aria-labelledby="countdown-title">
         <h1 id="countdown-title" title="RUN IT">
             <img src={headerLogo.src} alt="RUN IT">
@@ -31,10 +27,9 @@ timeZone: tour.timezone,
         <p class="venue">{tour.city}</p>
 
         <div class="date-tabs" aria-label="Singapore tour dates">
-
             <p class="date-pill">
                 {tour.dates.map((date) => (
-                <time datetime={date}>{formatter.format(new Date(date))}</time>
+                    <time datetime={date}>{formatter.format(new Date(date))}</time>
                 ))}
             </p>
         </div>
@@ -58,9 +53,6 @@ timeZone: tour.timezone,
                     <span>Seconds</span>
                 </div>
             </div>
-            <p class="local-time">
-                Timezone: <span>{tour.timezone}</span>
-            </p>
         </div>
     </section>
 </main>
@@ -73,7 +65,6 @@ timeZone: tour.timezone,
             .map((date) => new Date(date))
             .filter((date) => !Number.isNaN(date.getTime()));
 
-        const status = countdown.querySelector('[data-status]');
         const days = countdown.querySelector('[data-days]');
         const hours = countdown.querySelector('[data-hours]');
         const minutes = countdown.querySelector('[data-minutes]');
@@ -88,7 +79,6 @@ timeZone: tour.timezone,
             const nextIndex = dates.findIndex((date) => date.getTime() > now.getTime());
 
             if (nextIndex === -1) {
-                setText(status, 'Both Singapore shows have started');
                 setText(days, '000');
                 setText(hours, '00');
                 setText(minutes, '00');
@@ -103,7 +93,6 @@ timeZone: tour.timezone,
             const minuteValue = Math.floor((totalSeconds % 3600) / 60);
             const secondValue = totalSeconds % 60;
 
-            setText(status, `Counting down to Night ${nextIndex + 1}`);
             setText(days, String(dayValue).padStart(3, '0'));
             setText(hours, String(hourValue).padStart(2, '0'));
             setText(minutes, String(minuteValue).padStart(2, '0'));
