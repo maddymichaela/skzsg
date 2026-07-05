@@ -14,7 +14,7 @@ body {
 body {
     position: relative;
     min-height: 100dvh;
-    overflow: hidden;
+    overflow-x: hidden;
     color: #fff;
     background: #121518;
     font-family:
