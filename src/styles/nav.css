@@ -97,9 +97,10 @@ button.burger.is-open .burger-icon-bottom {
     text-transform: uppercase;
 }
 
+
 @media (min-width: 701px) {
     .nav-menu {
-        top: 130%;
+        top: 150%;
         left: auto;
         right: 6px;
         width: min(240px, calc(100vw - 48px));
@@ -114,7 +115,18 @@ button.burger.is-open .burger-icon-bottom {
     }
 }
 
+@media only screen and (max-width: 1024px) {
+    .nav-menu {
+        top: 152%;
+    }
+}
+
 @media (max-width: 700px) {
+
+    .nav-menu {
+        top: 62%;
+    }
+
     .site-nav {
         padding: 0 16px;
     }
