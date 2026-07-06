@@ -164,20 +164,20 @@
 }
 
 .timeline-item.is-past {
-    opacity: 0.48;
-    filter: grayscale(0.7);
+    opacity: 1;
+    filter: grayscale(0.9);
 }
 
 .timeline-item.is-past .timeline-copy h3,
 .timeline-item.is-past .timeline-copy>p:not(.timeline-time),
 .timeline-item.is-past .timeline-time,
 .timeline-item.is-past .timeline-time span {
-    color: rgba(255, 255, 255, 0.46);
+    color: rgba(255, 255, 255, 0.75);
 }
 
 .timeline-item.is-past .timeline-marker {
-    opacity: 0.46;
-    filter: grayscale(0.7);
+    opacity: 0.8;
+    filter: grayscale(1);
 }
 
 @media (max-width: 700px) {
