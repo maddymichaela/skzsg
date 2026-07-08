@@ -3,6 +3,7 @@ body {
     margin: 0;
     width: 100%;
     height: 100%;
+    cursor: url("/cursors/orange-flower-cursor.png") 24 24, auto;
 }
 
 *,
@@ -20,6 +21,16 @@ body {
     font-family:
         Oswald, Helvetica, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     text-transform: uppercase;
+}
+
+a,
+button,
+[role="button"],
+input,
+select,
+textarea,
+summary {
+    cursor: url("/cursors/orange-flower-cursor.png") 24 24, auto;
 }
 
 .site-bg {
