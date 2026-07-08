@@ -11,6 +11,8 @@ timeLabel: '3.25PM',
 title: 'test title',
 detail: 'test description',
 endDate: '2026-03-01T15:25:00+08:00',
+link: '#',
+linkLabel: 'Open link',
 },
 {
 side: 'left',
@@ -94,6 +96,11 @@ void hiddenTimelineItems;
                     )}
                     <h3>{item.title}</h3>
                     <p>{item.detail}</p>
+                    {item.link && (
+                    <a class="timeline-link" href={item.link}>
+                        {item.linkLabel ?? 'Learn more'}
+                    </a>
+                    )}
                 </article>
             </li>
             ))}
@@ -112,6 +119,12 @@ void hiddenTimelineItems;
 
         if (!Number.isNaN(endDate.getTime()) && endDate.getTime() < now.getTime()) {
             item.classList.add('is-past');
+
+            const link = item.querySelector('.timeline-link');
+
+            if (link instanceof HTMLElement) {
+                link.hidden = true;
+            }
         }
     });
 </script>
