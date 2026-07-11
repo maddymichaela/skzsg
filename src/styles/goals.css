@@ -1,252 +1,256 @@
- section#goals {
-     display: grid;
-     align-items: center;
-     min-height: min(50dvh, 82dvh);
-     isolation: isolate;
- }
+section#goals {
+    display: grid;
+    align-items: center;
+    min-height: min(50dvh, 82dvh);
+    isolation: isolate;
+}
 
- .goals-hero {
-     position: relative;
-     display: grid;
-     grid-template-columns: minmax(104px, 0.42fr) minmax(0, 1.58fr);
-     gap: clamp(24px, 6vw, 72px);
-     width: min(940px, 100%);
-     margin: 0 auto;
-     align-items: center;
- }
+.goals-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(104px, 0.42fr) minmax(0, 1.58fr);
+    gap: clamp(24px, 6vw, 72px);
+    width: min(940px, 100%);
+    margin: 0 auto;
+    align-items: center;
+}
 
- h2#goals-title {
-     position: sticky;
-     top: 32px;
-     display: flex;
-     align-items: flex-start;
-     gap: 0.04em;
-     margin: 0;
-     font-size: clamp(2.85rem, 8.4vw, 5.9rem);
-     line-height: 0.64;
-     text-align: left;
- }
+h2#goals-title {
+    position: sticky;
+    top: 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.04em;
+    margin: 0;
+    font-size: clamp(2.85rem, 8.4vw, 5.9rem);
+    line-height: 0.64;
+    text-align: left;
+}
 
- .goals-title-ko,
- .goals-title-en {
-     display: block;
-     writing-mode: vertical-rl;
-     text-orientation: upright;
- }
+.goals-title-ko,
+.goals-title-en {
+    display: block;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+}
 
- .goals-title-ko {
-     color: rgba(255, 255, 255, 0.38);
-     font-family: "Sunflower", Oswald, sans-serif;
-     font-size: 1.12em;
-     font-weight: 400;
-     line-height: 0.58;
- }
+.goals-title-ko {
+    color: rgba(255, 255, 255, 0.38);
+    font-family: "Sunflower", Oswald, sans-serif;
+    font-size: 1.12em;
+    font-weight: 400;
+    line-height: 0.58;
+}
 
- .goals-title-en {
-     color: #fff;
-     margin-top: 0.92em;
-     padding-left: 0;
-     font-size: 0.48em;
-     font-weight: 900;
-     line-height: 0.72;
-     text-transform: uppercase;
- }
+.goals-title-en {
+    color: #fff;
+    margin-top: 0.92em;
+    padding-left: 0;
+    font-size: 0.48em;
+    font-weight: 900;
+    line-height: 0.72;
+    text-transform: uppercase;
+}
 
- .goals-board {
-     position: relative;
-     display: grid;
-     gap: clamp(20px, 4vw, 60px);
- }
+.goals-board {
+    position: relative;
+    display: grid;
+    gap: clamp(20px, 4vw, 60px);
+}
 
- .goals-column {
-     position: relative;
-     display: grid;
-     grid-template-columns: 42px minmax(0, 1fr);
-     column-gap: clamp(14px, 3vw, 24px);
-     align-items: start;
- }
+.goals-column {
+    position: relative;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    column-gap: clamp(14px, 3vw, 24px);
+    align-items: start;
+}
 
- .goals-column::before {
-     content: attr(data-step);
-     position: relative;
-     z-index: 1;
-     display: block;
-     width: 42px;
-     height: 42px;
-     color: #ffffffb8;
-     font-size: clamp(1.35rem, 3vw, 1.6rem);
-     font-weight: 900;
-     line-height: 1;
-     text-align: center;
- }
+.goals-column::before {
+    content: attr(data-step);
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 42px;
+    height: 42px;
+    color: #ffffffb8;
+    font-size: clamp(1.35rem, 3vw, 1.6rem);
+    font-weight: 900;
+    line-height: 1;
+    text-align: center;
+}
 
- .goals-column::after {
-     content: "";
-     position: absolute;
-     top: 24px;
-     left: -8px;
-     z-index: -1;
-     width: 62px;
-     height: 18px;
-     background-image: var(--goals-stroke-image);
-     background-repeat: no-repeat;
-     background-position: center;
-     background-size: 100% 100%;
-     opacity: 0.22;
-     transform: rotate(-7deg);
- }
+.goals-column::after {
+    content: "";
+    position: absolute;
+    top: 24px;
+    left: -8px;
+    z-index: -1;
+    width: 62px;
+    height: 18px;
+    background-image: var(--goals-stroke-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    opacity: 0.22;
+    transform: rotate(-7deg);
+}
 
- .goals-copy {
-     position: relative;
-     min-width: 0;
-     padding: 0 0 0 clamp(4px, 1vw, 12px);
- }
+.goals-copy {
+    position: relative;
+    min-width: 0;
+    padding: 0 0 0 clamp(4px, 1vw, 12px);
+}
 
- .goals-column h3 {
-     position: relative;
-     margin-top: 0;
-     margin-bottom: 25px;
-     color: #fff;
-     font-size: clamp(1.45rem, 4vw, 2.4rem);
-     font-weight: 900;
-     line-height: 0.9;
-     text-transform: uppercase;
- }
+.goals-column h3 {
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #fff;
+    font-weight: 900;
+    line-height: 0.9;
+    text-transform: uppercase;
+}
 
- .goals-column h3::after {
-     content: "";
-     position: absolute;
-     right: auto;
-     bottom: -8px;
-     left: -10px;
-     z-index: -1;
-     width: min(210px, 78%);
-     height: 28px;
-     background-image: var(--goals-stroke-image);
-     background-repeat: no-repeat;
-     background-position: center;
-     background-size: 100% 100%;
-     opacity: 0.16;
-     transform: rotate(-2deg);
- }
+.goals-column h3::after {
+    content: "";
+    position: absolute;
+    right: auto;
+    bottom: -8px;
+    left: -10px;
+    z-index: -1;
+    width: min(210px, 78%);
+    height: 28px;
+    background-image: var(--goals-stroke-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    opacity: 0.16;
+    transform: rotate(-2deg);
+}
 
- .goals-column .list {
-     display: flex;
-     gap: 10px 25px;
-     margin: 0;
-     padding: 0;
-     list-style: none;
-     grid-auto-flow: column;
-     flex-direction: row;
-     flex-wrap: wrap;
-     margin-bottom: 36px;
- }
+.goals-column .list {
+    display: flex;
+    gap: 10px 25px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    grid-auto-flow: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+}
 
- .goals-column .list:last-of-type {
-     margin-bottom: 0;
- }
+.goals-column .list:last-of-type {
+    margin-bottom: 0;
+}
 
- .goals-column li {
-     position: relative;
-     display: flex;
-     min-height: 34px;
-     align-items: center;
-     justify-content: space-between;
-     gap: 16px;
-     padding: 4px 0 6px;
-     border: 0;
-     background: transparent;
-     color: rgba(255, 255, 255, 0.88);
-     font-size: clamp(1rem, 2.4vw, 1.28rem);
-     line-height: 1.05;
-     transition:
-         transform 180ms ease,
-         color 180ms ease;
- }
+.goals-column li {
+    position: relative;
+    display: flex;
+    min-height: 34px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 4px 0 6px;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.05;
+    transition:
+        transform 180ms ease,
+        color 180ms ease;
+}
 
- .goals-column li:hover {
-     transform: translateX(10px) skewX(-2deg);
-     color: #fff;
- }
+.goals-column li:hover {
+    /* transform: translateX(10px) skewX(-2deg); */
+    color: #fff;
+}
 
- @media (prefers-reduced-motion: no-preference) {
-     .goals-column {
-         animation: goals-rise 520ms ease both;
-     }
+@media (prefers-reduced-motion: no-preference) {
+    .goals-column {
+        animation: goals-rise 520ms ease both;
+    }
 
-     #stretch-goals {
-         animation-delay: 120ms;
-     }
+    #stretch-goals {
+        animation-delay: 120ms;
+    }
 
-     @keyframes goals-rise {
-         from {
-             opacity: 0;
-             transform: translateY(22px);
-         }
+    @keyframes goals-rise {
+        from {
+            opacity: 0;
+            transform: translateY(22px);
+        }
 
-         to {
-             opacity: 1;
-             transform: translateY(0);
-         }
-     }
- }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
 
- @media (max-width: 1024px) {
-     section#goals {
-         align-items: center;
-         padding: clamp(24px, 4vh, 42px) 16px clamp(28px, 5vh, 48px);
-     }
+@media (max-width: 1024px) {
+    section#goals {
+        align-items: center;
+        padding: clamp(24px, 4vh, 42px) 50px clamp(28px, 5vh, 48px);
+    }
 
-     .goals-hero {
-         grid-template-columns: 1fr;
-         align-self: center;
-         gap: clamp(24px, 5vh, 34px);
-     }
+    .goals-hero {
+        grid-template-columns: 1fr;
+        align-self: center;
+        gap: clamp(24px, 5vh, 44px);
+    }
 
-     h2#goals-title {
-         position: relative;
-         top: auto;
-         display: flex;
-         width: auto;
-         align-items: baseline;
-         justify-content: center;
-         gap: 0.22em;
-         font-size: clamp(3rem, 12vw, 5.4rem);
-         line-height: 0.9;
-         text-align: center;
-     }
+    h2#goals-title {
+        position: relative;
+        top: auto;
+        display: flex;
+        flex-flow: column wrap;
+        width: auto;
+        align-items: baseline;
+        justify-content: center;
+        gap: 0.22em;
+        font-size: clamp(3rem, 12vw, 5.4rem);
+        line-height: 0.9;
+        text-align: center;
+    }
 
-     .goals-title-ko,
-     .goals-title-en {
-         writing-mode: horizontal-tb;
-         text-orientation: mixed;
-     }
+    .goals-title-ko,
+    .goals-title-en {
+        writing-mode: horizontal-tb;
+        text-orientation: mixed;
+    }
 
-     .goals-title-ko {
-         line-height: 0.9;
-     }
+    .goals-title-ko {
+        line-height: 0.9;
+    }
 
-     .goals-title-en {
-         margin-top: 0;
-         font-size: 0.64em;
-         line-height: 1;
-     }
+    .goals-title-en {
+        margin-top: -71px;
+        font-size: 0.64em;
+        line-height: 1;
+        padding-left: 12%;
+    }
 
-     .goals-board {
-         padding-top: 0;
-     }
+    .goals-board {
+        padding-top: 0;
+    }
 
-     .goals-column {
-         grid-template-columns: 34px minmax(0, 1fr);
-     }
+    .goals-column {
+        grid-template-columns: 34px minmax(0, 1fr);
+    }
 
-     .goals-column::before {
-         width: 34px;
-         height: 34px;
-         font-size: 1.15rem;
-     }
+    .goals-column::after {
+        top: 10px;
+    }
 
-     .goals-copy {
-         padding-left: 10px;
-     }
- }
+    .goals-column::before {
+        width: 34px;
+        height: 34px;
+        font-size: 1.15rem;
+    }
+
+    .goals-copy {
+        padding-left: 10px;
+    }
+}

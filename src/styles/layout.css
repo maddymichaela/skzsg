@@ -58,13 +58,16 @@ h3 {
 }
 
 section#timeline,
-section#good,
 section#goals {
     position: relative;
     min-height: 100dvh;
     padding: clamp(56px, 9vh, 92px) 18px clamp(58px, 8vh, 82px);
     color: #fff;
     overflow: hidden;
+}
+
+section#goods {
+    min-height: 60dvh;
 }
 
 @media (max-width: 700px) {
