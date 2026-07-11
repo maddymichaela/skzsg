@@ -191,3 +191,14 @@ h1 {
         transition: none !important;
     }
 }
+
+@media (max-width: 700px) {
+    .countdown-page {
+        height: 80dvh;
+        margin-top: 100px;
+    }
+
+    .countdown-shell {
+        align-content: center;
+    }
+}

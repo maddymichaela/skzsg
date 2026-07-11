@@ -1,0 +1,37 @@
+---
+import strokeImage from '../assets/stroke.png';
+import '../styles/goals.css';
+---
+
+<section id="goals" class="goals-section" style={`--goals-stroke-image: url("${strokeImage.src}")`}>
+    <div class="goals-hero">
+        <h2 id="goals-title">
+            <span class="goals-title-ko">목표</span>
+            <span class="goals-title-en">Goals</span>
+        </h2>
+
+        <div class="goals-board">
+            <div class="goals-column" id="general-goals" data-step="01">
+                <div class="goals-copy">
+                    <h3>General</h3>
+                    <ul class="list">
+                        <li>Hand Banner</li>
+                        <li>Video Project</li>
+                        <li>Sing-along</li>
+                        <li>Message Book</li>
+                        <li>Venue Banner (Group)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="goals-column" id="stretch-goals" data-step="02">
+                <div class="goals-copy">
+                    <h3>Stretch</h3>
+                    <ul class="list">
+                        <li>Venue Banner (Individual)</li>
+                        <li>Food Hampers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
