@@ -63,7 +63,10 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
     <section id="timeline" class="timeline-section" aria-labelledby="timeline-title" style={`--timeline-marker-image:
         url("${brushDotImage.src}")`}>
         <div class="timeline-hero">
-            <h2 id="timeline-title">Timeline</h2>
+            <h2 id="timeline-title">
+                <span class="title-ko">연대표</span>
+                <span class="title-en">Timeline</span>
+            </h2>
         </div>
 
         <div class="timeline-board" aria-label="Concert day timeline" data-timeline-board>
@@ -93,7 +96,7 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
                         <p>{item.detail}</p>
                         )}
                         {item.link && (
-                        <a class="timeline-link" class="static-glitch" href={item.link}>
+                        <a class="timeline-link static-glitch" href={item.link}>
                             {item.linkLabel ?? 'Learn more'}
                         </a>
                         )}
@@ -185,6 +188,20 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
             return Math.max(0, item.offsetLeft - ((timelineList.clientWidth - item.clientWidth) / 2));
         };
 
+        const updateTimelineNavigationState = () => {
+            const visibleItems = getVisibleTimelineItems();
+            const isAtStart = focusedIndex <= 0;
+            const isAtEnd = focusedIndex >= visibleItems.length - 1;
+
+            if (previousButton instanceof HTMLElement) {
+                previousButton.setAttribute('aria-disabled', String(isAtStart));
+            }
+
+            if (nextButton instanceof HTMLElement) {
+                nextButton.setAttribute('aria-disabled', String(isAtEnd));
+            }
+        };
+
         const getScrollArcLift = () => {
             if (!(timelineList instanceof HTMLElement)) return 0;
 
@@ -257,6 +274,8 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
             if (focusedItem instanceof HTMLElement) {
                 focusedIndex = Number(focusedItem.dataset.timelineIndex ?? 0);
             }
+
+            updateTimelineNavigationState();
 
             const storkMarker = targetItem instanceof HTMLElement
                 ? targetItem.querySelector('.timeline-marker')
@@ -370,6 +389,8 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
         const scrollByDirection = (direction) => {
             const visibleItems = getVisibleTimelineItems();
             const nextIndex = Math.max(0, Math.min(visibleItems.length - 1, focusedIndex + direction));
+            if (nextIndex === focusedIndex) return;
+
             const nextItem = visibleItems[nextIndex];
 
             scrollToTimelineItem(nextItem, nextIndex - focusedIndex);

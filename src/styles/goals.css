@@ -8,7 +8,7 @@ section#goals {
 .goals-hero {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(104px, 0.42fr) minmax(0, 1.58fr);
+    grid-template-columns: minmax(104px, 0.5fr) minmax(0, 1.5fr);
     gap: clamp(24px, 6vw, 72px);
     width: min(940px, 100%);
     margin: 0 auto;
@@ -27,30 +27,6 @@ h2#goals-title {
     text-align: left;
 }
 
-.goals-title-ko,
-.goals-title-en {
-    display: block;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-}
-
-.goals-title-ko {
-    color: rgba(255, 255, 255, 0.38);
-    font-family: "Sunflower", Oswald, sans-serif;
-    font-size: 1.12em;
-    font-weight: 400;
-    line-height: 0.58;
-}
-
-.goals-title-en {
-    color: #fff;
-    margin-top: 0.92em;
-    padding-left: 0;
-    font-size: 0.48em;
-    font-weight: 900;
-    line-height: 0.72;
-    text-transform: uppercase;
-}
 
 .goals-board {
     position: relative;
@@ -92,7 +68,7 @@ h2#goals-title {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% 100%;
-    opacity: 0.22;
+    opacity: 0.38;
     transform: rotate(-7deg);
 }
 
@@ -112,6 +88,7 @@ h2#goals-title {
     text-transform: uppercase;
 }
 
+/* 
 .goals-column h3::after {
     content: "";
     position: absolute;
@@ -127,7 +104,7 @@ h2#goals-title {
     background-size: 100% 100%;
     opacity: 0.16;
     transform: rotate(-2deg);
-}
+} */
 
 .goals-column .list {
     display: flex;
@@ -198,7 +175,7 @@ h2#goals-title {
     .goals-hero {
         grid-template-columns: 1fr;
         align-self: center;
-        gap: clamp(24px, 5vh, 44px);
+        gap: clamp(24px, 5vh, 64px);
     }
 
     h2#goals-title {
@@ -215,21 +192,21 @@ h2#goals-title {
         text-align: center;
     }
 
-    .goals-title-ko,
-    .goals-title-en {
+    #goals-title .title-ko,
+    #goals-title .title-en {
         writing-mode: horizontal-tb;
         text-orientation: mixed;
     }
 
-    .goals-title-ko {
+    #goals-title .title-ko {
         line-height: 0.9;
     }
 
-    .goals-title-en {
+    #goals-title .title-en {
         margin-top: -71px;
         font-size: 0.64em;
         line-height: 1;
-        padding-left: 12%;
+        padding-left: 17%;
     }
 
     .goals-board {
@@ -252,5 +229,12 @@ h2#goals-title {
 
     .goals-copy {
         padding-left: 10px;
+    }
+}
+
+@media (max-width: 767px) {
+    #goals-title .title-en {
+        margin-top: -41px;
+        padding-left: 18%;
     }
 }

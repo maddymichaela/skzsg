@@ -1,3 +1,27 @@
+@font-face {
+    font-family: "Callifont Sharpie";
+    src: url("/fonts/CallifontSharpie-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Callifont Sharpie";
+    src: url("/fonts/CallifontSharpie-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Callifont Sharpie";
+    src: url("/fonts/CallifontSharpie-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 html,
 body {
     margin: 0;
@@ -55,6 +79,32 @@ h3 {
     line-height: 1.2em;
     letter-spacing: 0;
     text-transform: none;
+}
+
+.title-ko,
+.title-en {
+    display: block;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+}
+
+.title-ko {
+    color: rgba(255, 255, 255, 0.38);
+    font-family: "Callifont Sharpie", Oswald, sans-serif;
+    font-size: 2.1em;
+    font-weight: 700;
+    line-height: 0.58;
+}
+
+.title-en {
+    color: #fff;
+    margin-top: 1.7em;
+    padding-left: 0;
+    font-size: 0.48em;
+    font-weight: 900;
+    line-height: 0.72;
+    text-transform: uppercase;
+    margin-left: -23px;
 }
 
 section#timeline,
