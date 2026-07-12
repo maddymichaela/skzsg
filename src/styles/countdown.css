@@ -1,18 +1,7 @@
-.countdown-page {
+main#home {
     height: 100dvh;
-    display: grid;
     place-items: center center;
     padding: 40px 18px;
-    overflow: hidden;
-    color: #fff;
-}
-
-.countdown-shell {
-    width: min(980px, 100%);
-    max-height: 100%;
-    display: grid;
-    gap: 6px;
-    align-content: start;
 }
 
 .venue,
@@ -129,6 +118,10 @@ h1 img {
         padding: 24px 14px;
     }
 
+    .countdown-shell {
+        padding: 0;
+    }
+
     nav {
         padding-left: 5px;
     }
@@ -192,10 +185,9 @@ h1 {
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 767px) {
     .countdown-page {
         height: 80dvh;
-        margin-top: 100px;
     }
 
     .countdown-shell {

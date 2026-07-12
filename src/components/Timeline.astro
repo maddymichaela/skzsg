@@ -62,8 +62,8 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
 
     <section id="timeline" class="timeline-section" aria-labelledby="timeline-title" style={`--timeline-marker-image:
         url("${brushDotImage.src}")`}>
-        <div class="timeline-hero">
-            <h2 id="timeline-title">
+        <div class="hero  timeline-hero">
+            <h2 class="mix-title" id="timeline-title">
                 <span class="title-ko">연대표</span>
                 <span class="title-en">Timeline</span>
             </h2>
@@ -131,6 +131,11 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
         let lastScrollLeft = 0;
         let flightStartScrollLeft = 0;
         let flightTargetScrollLeft = 0;
+        let dragPointerId = null;
+        let dragStartX = 0;
+        let dragStartScrollLeft = 0;
+        let didDragTimeline = false;
+        let suppressTimelineClick = false;
 
         const getVisibleTimelineItems = () => Array.from(timelineItems)
             .filter((item) => item instanceof HTMLElement && !item.hidden);
@@ -200,6 +205,7 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
             if (nextButton instanceof HTMLElement) {
                 nextButton.setAttribute('aria-disabled', String(isAtEnd));
             }
+
         };
 
         const getScrollArcLift = () => {
@@ -396,11 +402,47 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
             scrollToTimelineItem(nextItem, nextIndex - focusedIndex);
         };
 
+        const snapToNearestTimelineItem = () => {
+            if (!(timelineList instanceof HTMLElement)) return;
+
+            const visibleItems = getVisibleTimelineItems();
+            const nearestItem = visibleItems.reduce((nearest, item) => {
+                if (!(nearest instanceof HTMLElement) || !(item instanceof HTMLElement)) return item;
+
+                const nearestDistance = Math.abs(getTimelineItemScrollLeft(nearest) - timelineList.scrollLeft);
+                const itemDistance = Math.abs(getTimelineItemScrollLeft(item) - timelineList.scrollLeft);
+
+                return itemDistance < nearestDistance ? item : nearest;
+            }, visibleItems[0]);
+
+            if (nearestItem instanceof HTMLElement) {
+                const nextIndex = Number(nearestItem.dataset.timelineIndex ?? focusedIndex);
+                scrollToTimelineItem(nearestItem, nextIndex - focusedIndex);
+            }
+        };
+
+        const stopTimelineDrag = (event) => {
+            if (!(timelineList instanceof HTMLElement) || dragPointerId !== event.pointerId) return;
+
+            timelineList.classList.remove('is-dragging');
+            timelineList.releasePointerCapture?.(event.pointerId);
+            dragPointerId = null;
+
+            if (didDragTimeline) {
+                suppressTimelineClick = true;
+                snapToNearestTimelineItem();
+                window.setTimeout(() => {
+                    suppressTimelineClick = false;
+                }, 0);
+            }
+        };
+
         updateTimelineAvailability();
         focusUpcomingItem();
         timelineItems.forEach((item) => {
-            item.addEventListener('click', () => {
+            item.addEventListener('click', (event) => {
                 if (!(item instanceof HTMLElement)) return;
+                if (event.target instanceof Element && event.target.closest('.timeline-link')) return;
 
                 const nextIndex = Number(item.dataset.timelineIndex ?? focusedIndex);
                 scrollToTimelineItem(item, nextIndex - focusedIndex);
@@ -410,6 +452,39 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
         nextButton?.addEventListener('click', () => scrollByDirection(1));
         if (timelineList instanceof HTMLElement) {
             lastScrollLeft = timelineList.scrollLeft;
+            timelineList.addEventListener('click', (event) => {
+                if (!suppressTimelineClick) return;
+
+                event.preventDefault();
+                event.stopPropagation();
+            }, true);
+            timelineList.addEventListener('pointerdown', (event) => {
+                if (event.button !== 0 || event.target instanceof Element && event.target.closest('.timeline-link')) return;
+
+                dragPointerId = event.pointerId;
+                dragStartX = event.clientX;
+                dragStartScrollLeft = timelineList.scrollLeft;
+                didDragTimeline = false;
+                timelineList.setPointerCapture?.(event.pointerId);
+            });
+            timelineList.addEventListener('pointermove', (event) => {
+                if (dragPointerId !== event.pointerId) return;
+
+                const dragDistance = event.clientX - dragStartX;
+
+                if (Math.abs(dragDistance) > 4) {
+                    didDragTimeline = true;
+                    timelineList.classList.add('is-dragging');
+                }
+
+                if (!didDragTimeline) return;
+
+                timelineList.scrollLeft = dragStartScrollLeft - dragDistance;
+                event.preventDefault();
+                updateFocusedTimelineItem();
+            }, { passive: false });
+            timelineList.addEventListener('pointerup', stopTimelineDrag);
+            timelineList.addEventListener('pointercancel', stopTimelineDrag);
             timelineList.addEventListener('scroll', () => {
                 const direction = timelineList.scrollLeft >= lastScrollLeft ? 1 : -1;
                 lastScrollLeft = timelineList.scrollLeft;

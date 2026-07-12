@@ -81,6 +81,19 @@ h3 {
     text-transform: none;
 }
 
+h2.mix-title {
+    position: sticky;
+    top: 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.04em;
+    margin: 0;
+    font-size: clamp(2.85rem, 8.4vw, 5.9rem);
+    line-height: 0.64;
+    text-align: left;
+}
+
+
 .title-ko,
 .title-en {
     display: block;
@@ -98,32 +111,101 @@ h3 {
 
 .title-en {
     color: #fff;
-    margin-top: 1.7em;
-    padding-left: 0;
     font-size: 0.48em;
     font-weight: 900;
-    line-height: 0.72;
     text-transform: uppercase;
+    line-height: 0.72;
+
+    padding-left: 0;
+    margin-top: 1.7em;
     margin-left: -23px;
 }
 
-section#timeline,
-section#goals {
-    position: relative;
+section {
     min-height: 100dvh;
     padding: clamp(56px, 9vh, 92px) 18px clamp(58px, 8vh, 82px);
     color: #fff;
+    display: grid;
     overflow: hidden;
+    position: relative;
+    align-items: center;
+    align-content: center;
+    isolation: isolate;
 }
 
-section#goods {
-    min-height: 60dvh;
+section.countdown-shell {
+    width: min(980px, 100%);
+    height: 100dvh;
+    max-height: 100%;
+    gap: 6px;
+}
+
+section#timeline {
+    grid-template-columns: minmax(104px, 0.5fr) minmax(0, 1.5fr);
+    width: min(1180px, calc(100% - max(18px, (100% - 940px) / 2)));
+    margin: 0 0 0 max(18px, calc((100% - 960px) / 2));
+}
+
+
+.hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(104px, 0.5fr) minmax(0, 1.5fr);
+    gap: clamp(24px, 6vw, 72px);
+    width: min(940px, 100%);
+    margin: 0 auto;
+    align-items: center;
+}
+
+@media (max-width: 1024px) {
+    section {
+        padding: clamp(56px, 9vh, 92px) 36px clamp(58px, 8vh, 82px);
+    }
+
+    .hero {
+        grid-template-columns: minmax(104px, 100%) minmax(0, 1.5fr);
+    }
+
+    h2.mix-title {
+        position: relative;
+        top: auto;
+        display: flex;
+        flex-flow: column wrap;
+        width: auto;
+        align-items: baseline;
+        justify-content: center;
+        gap: 0.22em;
+        font-size: clamp(3rem, 12vw, 5.4rem);
+        line-height: 0.9;
+        text-align: center;
+    }
+
+    .title-ko,
+    .title-en {
+        writing-mode: horizontal-tb;
+    }
+
+    .title-ko {
+        line-height: 0.9;
+    }
+
+    .title-en {
+        font-size: 0.64em;
+        line-height: 1;
+        padding-left: 17%;
+        margin-top: -71px;
+    }
 }
 
 @media (max-width: 700px) {
-
-    section {
-        /* padding: 0 16px 110px; */
-        height: 60dvh
+    main#home {
+        padding: 0 18px;
     }
+
+    .title-en {
+        margin-top: -41px;
+        padding-left: 16%;
+    }
+
+
 }

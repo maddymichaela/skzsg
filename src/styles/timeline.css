@@ -1,17 +1,3 @@
-section#timeline.timeline-section {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(104px, 0.5fr) minmax(0, 1.5fr);
-    gap: clamp(24px, 6vw, 72px);
-    align-items: center;
-    width: min(940px, 100%);
-    margin: 0 auto;
-    min-height: 100dvh;
-    padding: clamp(56px, 9vh, 92px) 18px clamp(58px, 8vh, 82px);
-    color: #fff;
-    overflow: hidden;
-}
-
 .timeline-section::before {
     content: "";
     position: absolute;
@@ -20,12 +6,12 @@ section#timeline.timeline-section {
     background: transparent;
 }
 
-.timeline-hero {
+.hero.timeline-hero {
     position: relative;
     margin: 0;
 }
 
-h2#timeline-title {
+/* h2#timeline-title {
     position: sticky;
     top: 32px;
     display: flex;
@@ -35,7 +21,7 @@ h2#timeline-title {
     font-size: clamp(2.85rem, 8.4vw, 5.9rem);
     line-height: 0.64;
     text-align: left;
-}
+} */
 
 .timeline-board {
     --stork-x: 50%;
@@ -45,7 +31,7 @@ h2#timeline-title {
     --timeline-rail-top: clamp(96px, 13vw, 128px);
     position: relative;
     width: 100%;
-    min-height: clamp(340px, 47vw, 440px);
+    min-height: clamp(340px, 47vw, 360px);
     min-width: 0;
     perspective: 1100px;
 }
@@ -76,38 +62,42 @@ h2#timeline-title {
     position: absolute;
     inset: 0;
     z-index: 5;
-    display: none;
+    display: block;
     pointer-events: none;
 }
 
 .timeline-zone {
     position: absolute;
     top: 0;
-    bottom: 0;
-    width: min(34vw, 420px);
+    height: calc(var(--timeline-rail-top) + 72px);
     padding: 0;
     border: 0;
     background: transparent;
     opacity: 0;
     pointer-events: auto;
+    touch-action: manipulation;
 }
 
 .timeline-zone-left {
     left: 0;
+    right: calc(100% - var(--stork-x));
     cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='25' fill='%23000' fill-opacity='.42' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='M35 22 25 32l10 10' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 32 32, w-resize;
 }
 
 .timeline-zone-right {
+    left: var(--stork-x);
     right: 0;
     cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='25' fill='%23000' fill-opacity='.42' stroke='%23fff' stroke-width='2'/%3E%3Cpath d='m29 22 10 10-10 10' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 32 32, e-resize;
 }
 
 .timeline-zone-left[aria-disabled="true"] {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='25' fill='%23777' fill-opacity='.24' stroke='%23999' stroke-width='2'/%3E%3Cpath d='M35 22 25 32l10 10' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 32 32, not-allowed;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='25' fill='%23777' fill-opacity='.24' stroke='%23777' stroke-width='2'/%3E%3Cpath d='M35 22 25 32l10 10' fill='none' stroke='%23777' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 32 32, not-allowed;
+    transition: cursor 3s ease-in-out;
 }
 
 .timeline-zone-right[aria-disabled="true"] {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='25' fill='%23777' fill-opacity='.24' stroke='%23999' stroke-width='2'/%3E%3Cpath d='m29 22 10 10-10 10' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 32 32, not-allowed;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='25' fill='%23777' fill-opacity='.24' stroke='%23777' stroke-width='2'/%3E%3Cpath d='m29 22 10 10-10 10' fill='none' stroke='%23777' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 32 32, not-allowed;
+    transition: cursor 3s ease-in-out;
 }
 
 .timeline-list {
@@ -129,6 +119,14 @@ h2#timeline-title {
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     transform-style: preserve-3d;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+}
+
+.timeline-list.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
 }
 
 .timeline-list::-webkit-scrollbar {
@@ -178,7 +176,7 @@ h2#timeline-title {
     filter: grayscale(1);
     transition: opacity 220ms ease, filter 220ms ease;
     will-change: opacity;
-    cursor: pointer;
+    cursor: inherit;
 }
 
 .timeline-item[hidden] {
@@ -302,55 +300,16 @@ h2#timeline-title {
         grid-template-columns: 1fr;
         align-items: center;
         gap: clamp(24px, 5vh, 64px);
+        width: min(940px, 100%);
+        margin: 0 auto;
         padding: clamp(24px, 4vh, 42px) 50px clamp(28px, 5vh, 48px);
     }
 
-    h2#timeline-title {
-        position: relative;
-        top: auto;
-        display: flex;
-        flex-flow: column wrap;
-        width: auto;
-        align-items: baseline;
-        justify-content: center;
-        gap: 0.22em;
-        font-size: clamp(3rem, 12vw, 5.4rem);
-        line-height: 0.9;
-        text-align: center;
-    }
-
-    #timeline-title .title-ko,
-    #timeline-title .title-en {
-        writing-mode: horizontal-tb;
-        text-orientation: mixed;
-    }
-
-    #timeline-title .title-ko {
-        line-height: 0.9;
-    }
-
-    #timeline-title .title-en {
-        margin-top: -71px;
-        font-size: 0.64em;
-        line-height: 1;
-        padding-left: 17%;
-    }
 }
 
 @media (max-width: 700px) {
-    section#timeline.timeline-section {
-        min-height: 82dvh;
-        padding: 52px 18px 46px;
-    }
-
-    #timeline-title .title-en {
-        margin-top: -41px;
-        padding-left: 18%;
-    }
-
     .timeline-board {
         --timeline-rail-top: 118px;
-        min-height: 390px;
     }
 
     .timeline-list {
@@ -361,11 +320,5 @@ h2#timeline-title {
 
     .timeline-item {
         grid-template-rows: calc(var(--timeline-rail-top) - 24px) 34px minmax(160px, auto);
-    }
-}
-
-@media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
-    .timeline-zones {
-        display: block;
     }
 }
