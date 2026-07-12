@@ -27,7 +27,7 @@ body {
     margin: 0;
     width: 100%;
     height: 100%;
-    cursor: url("/cursors/orange-flower-cursor.png") 18 18, auto;
+    cursor: url("/cursors/orange_flower_extended_cursor.png") 18 18, auto;
 }
 
 *,
@@ -54,7 +54,7 @@ input,
 select,
 textarea,
 summary {
-    cursor: url("/cursors/orange-flower-cursor.png") 18 18, auto;
+    cursor: url("/cursors/orange_flower_extended_cursor.png") 18 18, auto;
 }
 
 .site-bg {
