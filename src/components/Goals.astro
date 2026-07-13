@@ -1,6 +1,15 @@
 ---
 import strokeImage from '../assets/stroke.png';
 import '../styles/goals.css';
+import { getEntry } from 'astro:content';
+
+const goalsEntry = await getEntry('goals', 'goals');
+
+if (!goalsEntry) {
+	throw new Error('Goals settings not found. Add src/content/settings/goals.json');
+}
+
+const { generalGoals, stretchGoals } = goalsEntry.data;
 ---
 
 <section id="goals" class="goals-section" style={`--goals-stroke-image: url("${strokeImage.src}")`}>
@@ -15,11 +24,9 @@ import '../styles/goals.css';
                 <div class="goals-copy">
                     <h3>General</h3>
                     <ul class="list">
-                        <li>Hand Banner</li>
-                        <li>Video Project</li>
-                        <li>Sing-along</li>
-                        <li>Message Book</li>
-                        <li>Venue Banner (Group)</li>
+                        {generalGoals.map((goal) => (
+                            <li>{goal}</li>
+                        ))}
                     </ul>
                 </div>
             </div>
@@ -27,8 +34,9 @@ import '../styles/goals.css';
                 <div class="goals-copy">
                     <h3>Stretch</h3>
                     <ul class="list">
-                        <li>Venue Banner (Individual)</li>
-                        <li>Food Hampers</li>
+                        {stretchGoals.map((goal) => (
+                            <li>{goal}</li>
+                        ))}
                     </ul>
                 </div>
             </div>

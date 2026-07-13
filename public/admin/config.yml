@@ -1,0 +1,146 @@
+backend:
+  name: git-gateway
+  branch: staging
+
+publish_mode: editorial_workflow
+
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: site
+    label: Site Settings
+    files:
+      - name: site
+        label: General
+        file: src/content/settings/site.json
+        format: json
+        fields:
+          - label: Page Title
+            name: pageTitle
+            widget: string
+          - label: City
+            name: city
+            widget: string
+          - label: Venue
+            name: venue
+            widget: string
+            required: false
+          - label: Timezone
+            name: timezone
+            widget: string
+            default: Asia/Singapore
+          - label: Concert Dates
+            name: dates
+            widget: list
+            field:
+              label: Date & Time
+              name: date
+              widget: datetime
+          - label: Social Links
+            name: social
+            widget: object
+            fields:
+              - label: X (Twitter)
+                name: x
+                widget: string
+              - label: Telegram
+                name: telegram
+                widget: string
+              - label: Email
+                name: email
+                widget: string
+
+      - name: goals
+        label: Goals
+        file: src/content/settings/goals.json
+        format: json
+        fields:
+          - label: General Goals
+            name: generalGoals
+            widget: list
+            field:
+              label: Goal
+              name: goal
+              widget: string
+          - label: Stretch Goals
+            name: stretchGoals
+            widget: list
+            field:
+              label: Goal
+              name: goal
+              widget: string
+
+  - name: timeline
+    label: Timeline Events
+    folder: src/content/timeline
+    create: true
+    extension: json
+    format: json
+    slug: "{{slug}}"
+    sortable_fields: [order, startDate]
+    summary: "{{title}}"
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: Date Label
+        name: dateLabel
+        widget: string
+        required: false
+        hint: "Display text, e.g. '29 August - 12 September'"
+      - label: Start Date
+        name: startDate
+        widget: datetime
+        hint: "When this event becomes visible. Use Singapore time (UTC+8)."
+      - label: End Date
+        name: endDate
+        widget: datetime
+        hint: "When this event is marked as past. Use Singapore time (UTC+8)."
+      - label: Description
+        name: detail
+        widget: text
+        required: false
+      - label: Link URL
+        name: link
+        widget: string
+        required: false
+      - label: Link Label
+        name: linkLabel
+        widget: string
+        required: false
+        default: Learn more
+      - label: Sort Order
+        name: order
+        widget: number
+        value_type: int
+        min: 1
+        default: 1
+
+  - name: goods
+    label: Goods
+    folder: src/content/goods
+    create: true
+    extension: json
+    format: json
+    slug: "{{slug}}"
+    fields:
+      - label: Name
+        name: name
+        widget: string
+      - label: Image
+        name: image
+        widget: image
+        required: false
+      - label: Description
+        name: description
+        widget: text
+        required: false
+      - label: Link
+        name: link
+        widget: string
+        required: false
+      - label: Available
+        name: available
+        widget: boolean
+        default: true

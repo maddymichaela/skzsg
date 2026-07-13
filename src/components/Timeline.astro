@@ -2,63 +2,26 @@
 import '../styles/timeline.css';
 import storkImage from '../assets/stork.png';
 import brushDotImage from '../assets/brush_dot.png';
+import { getCollection } from 'astro:content';
 
-const timelineItems = [
-{
-dateLabel: '29 August - 12 September',
-timeLabel: '3.25PM',
-title: 'Banner Phrase Submission',
-startDate: '2026-08-29T15:25:00+08:00',
-endDate: '2026-09-12T15:25:00+08:00',
-link: '#',
-linkLabel: 'Submit phrase here',
-},
-{
-dateLabel: '26 September - 10 October',
-timeLabel: '3.25PM',
-title: 'Banner Phrase Poll',
-detail: 'Vote for your favourite phrase that will go on the banner',
-startDate: '2026-09-26T15:25:00+08:00',
-endDate: '2026-10-10T15:25:00+08:00',
-},
-{
-title: 'Banner Phrase Reveal',
-startDate: '2026-10-10T15:25:00+08:00',
-endDate: '2026-10-17T15:25:00+08:00',
-},
-{
-dateLabel: '24 October - 7 November',
-timeLabel: '3.25PM',
-title: 'Banner Design & Video Poll',
-startDate: '2026-10-24T15:25:00+08:00',
-endDate: '2026-11-07T15:25:00+08:00',
-},
-{
-title: 'Banner Design Reveal',
-startDate: '2026-11-07T15:25:00+08:00',
-endDate: '2026-11-14T15:25:00+08:00',
-},
-{
-dateLabel: '21 November',
-title: 'Donation Goods Reveal',
-timeLabel: '3.25PM',
-startDate: '2026-11-21T15:25:00+08:00',
-endDate: '2026-11-21T15:25:00+08:00',
-}
-];
+const timelineEntries = (await getCollection('timeline'))
+	.sort((a, b) => a.data.order - b.data.order);
+
+const timelineItems = timelineEntries.map((entry) => entry.data);
 
 const now = Date.now();
 const getTime = (date: string | undefined) => {
-if (!date) return Number.NaN;
+	if (!date) return Number.NaN;
 
-return new Date(date).getTime();
+	return new Date(date).getTime();
 };
 const isTimelineItemVisible = (item: (typeof timelineItems)[number], index: number) => {
-const startTime = getTime(item.startDate);
+	const startTime = getTime(item.startDate);
 
-return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
-    hasLockedTimelineItems=timelineItems.some((item, index)=> !isTimelineItemVisible(item, index));
-    ---
+	return index === 0 || Number.isNaN(startTime) || startTime <= now;
+};
+const hasLockedTimelineItems = timelineItems.some((item, index) => !isTimelineItemVisible(item, index));
+---
 
     <section id="timeline" class="timeline-section" aria-labelledby="timeline-title" style={`--timeline-marker-image:
         url("${brushDotImage.src}")`}>
@@ -85,10 +48,9 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
                     data-timeline-index={index} hidden={!isTimelineItemVisible(item, index)}>
                     <div class="timeline-marker" aria-hidden="true"></div>
                     <article class="timeline-copy">
-                        {(item.dateLabel || item.timeLabel) && (
+                        {(item.dateLabel) && (
                         <p class="timeline-time">
                             {item.dateLabel}
-                            <!-- {item.timeLabel && <span>{item.timeLabel}</span>} -->
                         </p>
                         )}
                         <h3>{item.title}</h3>

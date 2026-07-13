@@ -3,6 +3,10 @@ import '../styles/layout.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import background from '../assets/background2.jpg';
+import { getEntry } from 'astro:content';
+
+const site = await getEntry('site', 'site');
+const pageTitle = site?.data.pageTitle ?? 'Stray Kids Singapore Run It';
 ---
 
 <!doctype html>
@@ -16,7 +20,7 @@ import background from '../assets/background2.jpg';
 
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Stray Kids Singapore Run It</title>
+		<title>{pageTitle}</title>
 	</head>
 	<body>
 		<img class="site-bg" src={background.src} alt="" aria-hidden="true" />

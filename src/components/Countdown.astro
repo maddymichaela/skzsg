@@ -1,21 +1,26 @@
 ---
 import '../styles/countdown.css';
 import headerLogo from '../assets/logo_header_with_world_tour.png';
+import { getEntry } from 'astro:content';
+
+const site = await getEntry('site', 'site');
+
+if (!site) {
+	throw new Error('Site settings not found. Add src/content/settings/site.json');
+}
 
 const tour = {
-city: 'Singapore',
-venue: 'Singapore Indoor Stadium',
-country: 'SG',
-timezone: 'Asia/Singapore',
-dates: ['2027-03-06T18:00:00+08:00', '2027-03-07T17:00:00+08:00'],
+	city: site.data.city,
+	timezone: site.data.timezone,
+	dates: site.data.dates,
 };
 
 const formatter = new Intl.DateTimeFormat('en-SG', {
-weekday: 'long',
-day: 'numeric',
-month: 'long',
-year: 'numeric',
-timeZone: tour.timezone,
+	weekday: 'long',
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+	timeZone: tour.timezone,
 });
 ---
 
