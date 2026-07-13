@@ -3,16 +3,16 @@ import '../styles/countdown.css';
 import headerLogo from '../assets/logo_header_with_world_tour.png';
 import { getEntry } from 'astro:content';
 
-const site = await getEntry('site', 'site');
+const countdown = await getEntry('countdown', 'countdown');
 
-if (!site) {
-	throw new Error('Site settings not found. Add src/content/settings/site.json');
+if (!countdown) {
+	throw new Error('Countdown settings not found. Add src/content/settings/countdown.json');
 }
 
 const tour = {
-	city: site.data.city,
-	timezone: site.data.timezone,
-	dates: site.data.dates,
+	city: countdown.data.city,
+	timezone: countdown.data.timezone,
+	dates: countdown.data.dates,
 };
 
 const formatter = new Intl.DateTimeFormat('en-SG', {

@@ -6,15 +6,21 @@ const site = defineCollection({
 	loader: glob({ pattern: 'site.json', base: './src/content/settings' }),
 	schema: z.object({
 		pageTitle: z.string(),
-		city: z.string(),
-		venue: z.string().optional(),
-		timezone: z.string(),
-		dates: z.array(z.string()),
 		social: z.object({
 			x: z.string(),
 			telegram: z.string(),
 			email: z.string(),
 		}),
+	}),
+});
+
+const countdown = defineCollection({
+	loader: glob({ pattern: 'countdown.json', base: './src/content/settings' }),
+	schema: z.object({
+		city: z.string(),
+		venue: z.string().optional(),
+		timezone: z.string(),
+		dates: z.array(z.string()),
 	}),
 });
 
@@ -51,4 +57,4 @@ const goods = defineCollection({
 	}),
 });
 
-export const collections = { site, goals, timeline, goods };
+export const collections = { site, countdown, goals, timeline, goods };
