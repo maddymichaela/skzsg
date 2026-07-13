@@ -34,6 +34,7 @@
     min-height: clamp(340px, 47vw, 360px);
     min-width: 0;
     perspective: 1100px;
+    touch-action: pan-y;
 }
 
 .timeline-stork {
@@ -75,7 +76,7 @@
     background: transparent;
     opacity: 0;
     pointer-events: auto;
-    touch-action: manipulation;
+    touch-action: pan-y;
 }
 
 .timeline-zone-left {
@@ -119,7 +120,7 @@
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     transform-style: preserve-3d;
-    touch-action: pan-x pan-y;
+    touch-action: pan-y;
     cursor: grab;
     -webkit-user-select: none;
     user-select: none;
@@ -127,6 +128,7 @@
 
 .timeline-list.is-dragging {
     cursor: grabbing;
+    scroll-behavior: auto;
     scroll-snap-type: none;
 }
 
