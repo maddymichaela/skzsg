@@ -100,7 +100,7 @@ button.burger.is-open .burger-icon-bottom {
 
 @media (min-width: 701px) {
     .nav-menu {
-        top: 180%;
+        padding-top: 8%;
         left: auto;
         right: 6px;
         width: min(240px, calc(100vw - 48px));
