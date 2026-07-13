@@ -11,7 +11,7 @@ collections:
   - name: site
     label: Site Settings
     files:
-      - name: site
+      - name: general
         label: General
         file: src/content/settings/site.json
         format: json
@@ -19,9 +19,9 @@ collections:
           - label: Page Title
             name: pageTitle
             widget: string
-      - name: site
+      - name: footer_links
         label: Footer Links
-        file: src/content/settings/site.json
+        file: src/content/settings/footer.json
         format: json
         fields:
           - label: Social Links
