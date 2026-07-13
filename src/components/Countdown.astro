@@ -59,6 +59,13 @@ const formatter = new Intl.DateTimeFormat('en-SG', {
                 </div>
             </div>
         </div>
+
+        <button type="button" class="scroll-cue" data-scroll-cue aria-label="Scroll down for more">
+            <span class="scroll-cue-text">Scroll down</span>
+            <svg class="scroll-cue-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+        </button>
     </section>
 </main>
 
@@ -106,5 +113,23 @@ const formatter = new Intl.DateTimeFormat('en-SG', {
 
         updateCountdown();
         window.setInterval(updateCountdown, 1000);
+    }
+
+    const scrollCue = document.querySelector('[data-scroll-cue]');
+    const homePage = document.getElementById('home');
+
+    if (scrollCue instanceof HTMLElement && homePage) {
+        scrollCue.addEventListener('click', () => {
+            const nextSection = document.querySelector('#home ~ section');
+            nextSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        const cueObserver = new IntersectionObserver(([entry]) => {
+            scrollCue.classList.toggle('is-visible', entry.isIntersecting);
+        }, {
+            threshold: 0.95,
+        });
+
+        cueObserver.observe(homePage);
     }
 </script>
