@@ -19,6 +19,11 @@ collections:
           - label: Page Title
             name: pageTitle
             widget: string
+      - name: site
+        label: Footer Links
+        file: src/content/settings/site.json
+        format: json
+        fields:
           - label: Social Links
             name: social
             widget: object
