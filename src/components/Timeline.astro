@@ -421,11 +421,36 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
             }
         };
 
-        const stopTimelineDrag = (event) => {
-            if (!(timelineList instanceof HTMLElement) || dragPointerId !== event.pointerId) return;
+        const startTimelineDrag = (id, clientX) => {
+            if (!(timelineList instanceof HTMLElement)) return;
+
+            dragPointerId = id;
+            dragStartX = clientX;
+            dragStartScrollLeft = timelineList.scrollLeft;
+            didDragTimeline = false;
+        };
+
+        const moveTimelineDrag = (id, clientX) => {
+            if (!(timelineList instanceof HTMLElement) || dragPointerId !== id) return false;
+
+            const dragDistance = clientX - dragStartX;
+
+            if (Math.abs(dragDistance) > 4) {
+                didDragTimeline = true;
+                timelineList.classList.add('is-dragging');
+            }
+
+            if (!didDragTimeline) return false;
+
+            timelineList.scrollLeft = dragStartScrollLeft - dragDistance;
+            updateFocusedTimelineItem();
+            return true;
+        };
+
+        const finishTimelineDrag = () => {
+            if (!(timelineList instanceof HTMLElement) || dragPointerId === null) return;
 
             timelineList.classList.remove('is-dragging');
-            timelineList.releasePointerCapture?.(event.pointerId);
             dragPointerId = null;
 
             if (didDragTimeline) {
@@ -433,8 +458,15 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
                 snapToNearestTimelineItem();
                 window.setTimeout(() => {
                     suppressTimelineClick = false;
-                }, 0);
+                }, 250);
             }
+        };
+
+        const stopTimelinePointerDrag = (event) => {
+            if (!(timelineList instanceof HTMLElement) || dragPointerId !== event.pointerId) return;
+
+            timelineList.releasePointerCapture?.(event.pointerId);
+            finishTimelineDrag();
         };
 
         updateTimelineAvailability();
@@ -461,30 +493,30 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
             timelineList.addEventListener('pointerdown', (event) => {
                 if (event.button !== 0 || event.target instanceof Element && event.target.closest('.timeline-link')) return;
 
-                dragPointerId = event.pointerId;
-                dragStartX = event.clientX;
-                dragStartScrollLeft = timelineList.scrollLeft;
-                didDragTimeline = false;
+                startTimelineDrag(event.pointerId, event.clientX);
                 timelineList.setPointerCapture?.(event.pointerId);
             });
             timelineList.addEventListener('pointermove', (event) => {
-                if (dragPointerId !== event.pointerId) return;
-
-                const dragDistance = event.clientX - dragStartX;
-
-                if (Math.abs(dragDistance) > 4) {
-                    didDragTimeline = true;
-                    timelineList.classList.add('is-dragging');
+                if (moveTimelineDrag(event.pointerId, event.clientX)) {
+                    event.preventDefault();
                 }
-
-                if (!didDragTimeline) return;
-
-                timelineList.scrollLeft = dragStartScrollLeft - dragDistance;
-                event.preventDefault();
-                updateFocusedTimelineItem();
             }, { passive: false });
-            timelineList.addEventListener('pointerup', stopTimelineDrag);
-            timelineList.addEventListener('pointercancel', stopTimelineDrag);
+            timelineList.addEventListener('pointerup', stopTimelinePointerDrag);
+            timelineList.addEventListener('pointercancel', stopTimelinePointerDrag);
+            timelineList.addEventListener('touchstart', (event) => {
+                if (event.touches.length !== 1 || event.target instanceof Element && event.target.closest('.timeline-link')) return;
+
+                startTimelineDrag('touch', event.touches[0].clientX);
+            }, { passive: true });
+            timelineList.addEventListener('touchmove', (event) => {
+                if (event.touches.length !== 1) return;
+
+                if (moveTimelineDrag('touch', event.touches[0].clientX)) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+            timelineList.addEventListener('touchend', finishTimelineDrag);
+            timelineList.addEventListener('touchcancel', finishTimelineDrag);
             timelineList.addEventListener('scroll', () => {
                 const direction = timelineList.scrollLeft >= lastScrollLeft ? 1 : -1;
                 lastScrollLeft = timelineList.scrollLeft;

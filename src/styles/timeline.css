@@ -119,8 +119,9 @@
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     transform-style: preserve-3d;
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
     cursor: grab;
+    -webkit-user-select: none;
     user-select: none;
 }
 
@@ -320,5 +321,11 @@
 
     .timeline-item {
         grid-template-rows: calc(var(--timeline-rail-top) - 24px) 34px minmax(160px, auto);
+    }
+}
+
+@media (hover: none), (pointer: coarse) {
+    .timeline-zone {
+        pointer-events: none;
     }
 }
