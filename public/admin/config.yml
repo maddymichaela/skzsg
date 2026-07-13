@@ -42,7 +42,7 @@ collections:
     label: Countdown
     files:
       - name: countdown
-        label: General
+        label: Concert Info
         file: src/content/settings/countdown.json
         format: json
         fields:
@@ -69,7 +69,7 @@ collections:
     label: Goals
     files:
       - name: goals
-        label: General
+        label: Goal List
         file: src/content/settings/goals.json
         format: json
         fields:
