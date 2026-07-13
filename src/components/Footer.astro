@@ -2,13 +2,13 @@
 import '../styles/footer.css';
 import { getEntry } from 'astro:content';
 
-const site = await getEntry('site', 'site');
+const footer = await getEntry('footer', 'footer');
 
-if (!site) {
-	throw new Error('Site settings not found. Add src/content/settings/site.json');
+if (!footer) {
+	throw new Error('Footer settings not found. Add src/content/settings/footer.json');
 }
 
-const { social } = site.data;
+const { social } = footer.data;
 ---
 
 <footer>

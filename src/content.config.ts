@@ -6,6 +6,12 @@ const site = defineCollection({
 	loader: glob({ pattern: 'site.json', base: './src/content/settings' }),
 	schema: z.object({
 		pageTitle: z.string(),
+	}),
+});
+
+const footer = defineCollection({
+	loader: glob({ pattern: 'footer.json', base: './src/content/settings' }),
+	schema: z.object({
 		social: z.object({
 			x: z.string(),
 			telegram: z.string(),
@@ -57,4 +63,4 @@ const goods = defineCollection({
 	}),
 });
 
-export const collections = { site, countdown, goals, timeline, goods };
+export const collections = { site, footer, countdown, goals, timeline, goods };
