@@ -146,45 +146,6 @@ h1 img {
     }
 }
 
-/* animation */
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-h1 {
-    animation: fadeUp 600ms ease both;
-}
-
-.venue {
-    animation: fadeUp 600ms ease 120ms both;
-}
-
-.date-tabs {
-    animation: fadeUp 600ms ease 220ms both;
-}
-
-.countdown-card {
-    animation: fadeUp 600ms ease 320ms both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation: none !important;
-        transition: none !important;
-    }
-}
-
 @media (max-width: 767px) {
     .countdown-page {
         height: 80dvh;

@@ -518,7 +518,10 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
                 event.stopPropagation();
             }, true);
             timelineDragSurface.addEventListener('pointerdown', (event) => {
-                if (event.button !== 0 || event.target instanceof Element && event.target.closest('.timeline-link')) return;
+                if (
+                    event.button !== 0
+                    || event.target instanceof Element && event.target.closest('.timeline-link, .timeline-zone')
+                ) return;
 
                 startTimelineDrag(event.pointerId, event.clientX);
                 timelineDragSurface.setPointerCapture?.(event.pointerId);
@@ -532,7 +535,10 @@ return index === 0 || Number.isNaN(startTime) || startTime <= now; }; const
             timelineDragSurface.addEventListener('pointercancel', stopTimelinePointerDrag);
             timelineDragSurface.addEventListener('touchstart', (event) => {
                 if ('PointerEvent' in window) return;
-                if (event.touches.length !== 1 || event.target instanceof Element && event.target.closest('.timeline-link')) return;
+                if (
+                    event.touches.length !== 1
+                    || event.target instanceof Element && event.target.closest('.timeline-link, .timeline-zone')
+                ) return;
 
                 startTimelineDrag('touch', event.touches[0].clientX);
             }, { passive: true });

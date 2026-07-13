@@ -23,5 +23,31 @@ import background from '../assets/background2.jpg';
 		<Nav />
 		<slot />
 		<Footer />
+		<script>
+			const revealSections = Array.from(document.querySelectorAll('section:not(.countdown-shell)'));
+			const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+			if (!prefersReducedMotion && revealSections.length > 0) {
+				document.body.classList.add('is-scroll-reveal-ready');
+
+				const revealObserver = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (!entry.isIntersecting) return;
+
+						entry.target.classList.add('is-section-visible');
+						revealObserver.unobserve(entry.target);
+					});
+				}, {
+					rootMargin: '0px 0px -18% 0px',
+					threshold: 0.16,
+				});
+
+				revealSections.forEach((section) => {
+					if (!(section instanceof HTMLElement)) return;
+
+					revealObserver.observe(section);
+				});
+			}
+		</script>
 	</body>
 </html>
