@@ -282,8 +282,8 @@ section#timeline {
     .title-en {
         font-size: 0.4em;
         line-height: 1;
-        padding-left: 12%;
-        margin-top: -91px;
+        margin-top: min(-78px, -100px);
+        padding-left: min(12%, 17%);
     }
 }
 
