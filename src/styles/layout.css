@@ -75,7 +75,7 @@ h2 {
 }
 
 h3 {
-    font-size: clamp(1.4rem, 4.5vw, 2rem);
+    font-size: clamp(1.4rem, 4.5vw, 1.8rem);
     line-height: 1.2em;
     letter-spacing: 0;
     text-transform: none;
@@ -235,13 +235,18 @@ section#timeline {
     align-items: center;
 }
 
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 1024px) {
     .title-ko {
         min-height: 660px;
     }
+
+    section {
+        padding-left: 48px;
+        padding-right: 48px;
+    }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
     section {
         padding: clamp(56px, 9vh, 92px) 36px clamp(58px, 8vh, 82px);
     }
@@ -271,24 +276,38 @@ section#timeline {
 
     .title-ko {
         line-height: 0.9;
+        font-size: 1.8em;
     }
 
     .title-en {
-        font-size: 0.64em;
+        font-size: 0.4em;
         line-height: 1;
-        padding-left: 17%;
-        margin-top: -71px;
+        padding-left: 12%;
+        margin-top: -91px;
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 767px) {
     /* main#home {
         padding: 0 18px;
     } */
 
+    .timer strong {
+        font-size: 1.8rem;
+    }
+
+    .title-ko {
+        font-size: 2.4em;
+    }
+
     .title-en {
-        margin-top: -41px;
-        padding-left: 16%;
+        margin-top: min(-4vw, -15vw);
+        padding-left: min(15vw, 68px);
+        font-size: 2rem;
+    }
+
+    .timeline-copy h3 {
+        font-size: 1.6rem;
     }
 
 
@@ -296,6 +315,58 @@ section#timeline {
 
 
 /* animation */
+
+/* glitch hover */
+.static-glitch {
+    position: relative;
+    transition: filter 120ms ease;
+}
+
+.static-glitch:hover {
+    animation: static-jitter 120ms steps(2, end);
+    filter:
+        drop-shadow(2px 0 #ff004c) drop-shadow(-2px 0 #00e5ff);
+}
+
+@keyframes static-jitter {
+    0% {
+        transform: translate(0, 0);
+        filter: none;
+    }
+
+    10% {
+        transform: translate(-2px, 1px);
+        filter: drop-shadow(2px 0 #ff004c) drop-shadow(-2px 0 #00e5ff);
+    }
+
+    20% {
+        transform: translate(2px, -1px);
+    }
+
+    35% {
+        transform: translate(-1px, -2px);
+    }
+
+    50% {
+        transform: translate(3px, 1px);
+    }
+
+    65% {
+        transform: translate(-2px, 0);
+    }
+
+    80% {
+        transform: translate(1px, 2px);
+        filter: drop-shadow(2px 0 #ff004c) drop-shadow(-2px 0 #00e5ff);
+    }
+
+    100% {
+        transform: translate(0, 0);
+        filter: none;
+    }
+}
+
+
 @keyframes fadeUp {
     from {
         opacity: 0;

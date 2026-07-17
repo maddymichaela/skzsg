@@ -298,7 +298,7 @@
     transform: translateY(0);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
     section#timeline.timeline-section {
         grid-template-columns: 1fr;
         align-items: center;
@@ -308,9 +308,14 @@
         padding: clamp(24px, 4vh, 42px) 50px clamp(28px, 5vh, 48px);
     }
 
+
 }
 
-@media (max-width: 700px) {
+@media (max-width: 767px) {
+    section#timeline.timeline-section {
+        padding: clamp(24px, 4vh, 42px) 30px clamp(28px, 5vh, 48px);
+    }
+
     .timeline-board {
         --timeline-rail-top: 118px;
     }
@@ -326,7 +331,8 @@
     }
 }
 
-@media (hover: none), (pointer: coarse) {
+@media (hover: none),
+(pointer: coarse) {
     .timeline-zone {
         pointer-events: none;
     }

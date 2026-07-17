@@ -99,7 +99,7 @@ button.burger.is-open .burger-icon-bottom {
 }
 
 
-@media (min-width: 701px) {
+@media (min-width: 768px) {
     .nav-menu {
         left: auto;
         right: 6px;
@@ -116,16 +116,25 @@ button.burger.is-open .burger-icon-bottom {
     }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1023px) {
+    .nav-link {
+        font-size: 1.5rem;
+    }
+
+    .nav-menu {
+        padding-top: 10%;
+    }
+
     .site-nav {
         padding: 0 24px 0 12px;
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 767px) {
 
     .nav-menu {
         top: 62%;
+        padding-top: 14%;
     }
 
     .site-nav {
