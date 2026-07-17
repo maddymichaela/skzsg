@@ -2,17 +2,17 @@ footer {
     position: relative;
     inset: auto 0 0;
     z-index: 10;
-    height: 70px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 24px;
     background: transparent;
 }
 
 footer a {
-    width: 34px;
-    height: 34px;
+    width: 40px;
+    height: 40px;
     display: grid;
     place-items: center;
     color: white;

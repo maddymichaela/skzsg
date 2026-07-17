@@ -31,7 +31,7 @@
     --timeline-rail-top: clamp(96px, 13vw, 128px);
     position: relative;
     width: 100%;
-    min-height: clamp(340px, 47vw, 360px);
+    min-height: clamp(336px, 47vw, 360px);
     min-width: 0;
     perspective: 1100px;
     touch-action: pan-y;
@@ -42,8 +42,8 @@
     top: var(--stork-y);
     left: var(--stork-x);
     z-index: 3;
-    width: clamp(58px, 8vw, 82px);
-    height: clamp(58px, 8vw, 82px);
+    width: clamp(56px, 8vw, 80px);
+    height: clamp(56px, 8vw, 80px);
     object-fit: contain;
     pointer-events: none;
     transform: translateX(-50%) translateY(var(--stork-flight-lift)) rotate(var(--stork-flight-tilt));
@@ -56,7 +56,7 @@
 }
 
 .timeline-stork.is-flying {
-    --stork-flight-lift: -10px;
+    --stork-flight-lift: -8px;
 }
 
 .timeline-zones {
@@ -103,14 +103,14 @@
 
 .timeline-list {
     --edge-space: 0px;
-    --timeline-card-width: clamp(230px, 34vw, 360px);
+    --timeline-card-width: clamp(232px, 34vw, 360px);
     position: relative;
     display: grid;
     grid-auto-columns: var(--timeline-card-width);
     grid-auto-flow: column;
-    gap: clamp(38px, 8vw, 96px);
+    gap: clamp(40px, 8vw, 96px);
     margin: 0;
-    padding: 0 calc((100% - var(--timeline-card-width)) / 2) 42px;
+    padding: 0 calc((100% - var(--timeline-card-width)) / 2) 40px;
     overflow-x: auto;
     overflow-y: hidden;
     list-style: none;
@@ -124,6 +124,12 @@
     cursor: grab;
     -webkit-user-select: none;
     user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .timeline-list {
+        scroll-behavior: auto;
+    }
 }
 
 .timeline-list.is-dragging {
@@ -157,7 +163,7 @@
     top: calc(var(--timeline-rail-top) - 8px);
     z-index: 0;
     width: 1px;
-    height: 62px;
+    height: 64px;
     margin-left: -1px;
     grid-row: 1;
     grid-column: 1;
@@ -172,7 +178,7 @@
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-rows: calc(var(--timeline-rail-top) - 24px) 34px minmax(130px, auto);
+    grid-template-rows: calc(var(--timeline-rail-top) - 24px) 32px minmax(128px, auto);
     min-width: 0;
     scroll-snap-align: center;
     opacity: var(--dial-opacity);
@@ -215,7 +221,7 @@
 .timeline-copy {
     grid-row: 3;
     min-width: 0;
-    padding-top: clamp(28px, 4.5vw, 46px);
+    padding-top: clamp(32px, 4.5vw, 48px);
     text-align: center;
     transform: translateY(var(--dial-copy-y)) scale(var(--dial-scale));
     transition: transform 220ms ease;
@@ -223,16 +229,16 @@
 
 .timeline-time {
     display: block;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     color: rgba(255, 255, 255, 0.72);
-    font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+    font-size: clamp(0.75rem, 2.2vw, 1rem);
     font-weight: 800;
     line-height: 1.05;
 }
 
 .timeline-time span {
     display: block;
-    margin-top: 5px;
+    margin-top: 8px;
     color: rgba(255, 255, 255, 0.5);
 }
 
@@ -244,10 +250,10 @@
 }
 
 .timeline-copy>p:not(.timeline-time) {
-    margin: 10px auto 0;
-    max-width: 23ch;
+    margin: 8px auto 0;
+    max-width: 24ch;
     color: rgba(255, 255, 255, 0.58);
-    font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+    font-size: clamp(0.75rem, 1.8vw, 1rem);
     font-weight: 800;
     line-height: 1.12;
     text-transform: lowercase;
@@ -256,9 +262,9 @@
 .timeline-link {
     display: inline-flex;
     align-items: center;
-    margin-top: 14px;
+    margin-top: 16px;
     color: #fff;
-    font-size: 0.86rem;
+    font-size: 0.75rem;
     font-weight: 900;
     line-height: 1;
     text-decoration: underline;
@@ -305,7 +311,7 @@
         gap: clamp(24px, 5vh, 64px);
         width: min(940px, 100%);
         margin: 0 auto;
-        padding: clamp(24px, 4vh, 42px) 50px clamp(28px, 5vh, 48px);
+        padding: clamp(24px, 4vh, 40px) 48px clamp(32px, 5vh, 48px);
     }
 
 
@@ -313,21 +319,21 @@
 
 @media (max-width: 767px) {
     section#timeline.timeline-section {
-        padding: clamp(24px, 4vh, 42px) 30px clamp(28px, 5vh, 48px);
+        padding: clamp(24px, 4vh, 40px) 32px clamp(32px, 5vh, 48px);
     }
 
     .timeline-board {
-        --timeline-rail-top: 118px;
+        --timeline-rail-top: 120px;
     }
 
     .timeline-list {
-        grid-auto-columns: min(74vw, 310px);
-        gap: 34px;
+        grid-auto-columns: min(74vw, 312px);
+        gap: 32px;
         padding-bottom: 32px;
     }
 
     .timeline-item {
-        grid-template-rows: calc(var(--timeline-rail-top) - 24px) 34px minmax(160px, auto);
+        grid-template-rows: calc(var(--timeline-rail-top) - 24px) 32px minmax(160px, auto);
     }
 }
 

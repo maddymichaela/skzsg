@@ -1,46 +1,59 @@
 ---
-import '../styles/countdown.css';
-import headerLogo from '../assets/logo_header_with_world_tour.png';
-import { getEntry } from 'astro:content';
+import "../styles/countdown.css";
+import headerLogo from "../assets/logo_header_with_world_tour.png";
+import { getEntry } from "astro:content";
 
-const countdown = await getEntry('countdown', 'countdown');
+const countdown = await getEntry("countdown", "countdown");
 
 if (!countdown) {
-	throw new Error('Countdown settings not found. Add src/content/settings/countdown.json');
+    throw new Error(
+        "Countdown settings not found. Add src/content/settings/countdown.json",
+    );
 }
 
 const tour = {
-	city: countdown.data.city,
-	timezone: countdown.data.timezone,
-	dates: countdown.data.dates,
+    city: countdown.data.city,
+    timezone: countdown.data.timezone,
+    dates: countdown.data.dates,
 };
 
-const formatter = new Intl.DateTimeFormat('en-SG', {
-	weekday: 'long',
-	day: 'numeric',
-	month: 'long',
-	year: 'numeric',
-	timeZone: tour.timezone,
+const formatter = new Intl.DateTimeFormat("en-SG", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: tour.timezone,
 });
 ---
 
 <main id="home" class="countdown-page">
     <section class="countdown-shell" aria-labelledby="countdown-title">
         <h1 id="countdown-title" title="RUN IT">
-            <img class="static-glitch" src={headerLogo.src} alt="RUN IT">
+            <img class="static-glitch" src={headerLogo.src} alt="RUN IT" />
         </h1>
         <p class="venue">{tour.city}</p>
 
         <div class="date-tabs" aria-label="Singapore tour dates">
             <p class="date-pill">
-                {tour.dates.map((date) => (
-                <time datetime={date}>{formatter.format(new Date(date))}</time>
-                ))}
+                {
+                    tour.dates.map((date) => (
+                        <time datetime={date}>
+                            {formatter.format(new Date(date))}
+                        </time>
+                    ))
+                }
             </p>
         </div>
 
-        <div class="countdown-card" data-countdown data-dates={JSON.stringify(tour.dates)}>
-            <div class="timer" aria-live="polite">
+        <div
+            class="countdown-card"
+            data-countdown
+            data-dates={JSON.stringify(tour.dates)}
+        >
+            <p class="sr-only" data-countdown-summary aria-live="polite">
+                Countdown to Stray Kids Singapore concert.
+            </p>
+            <div class="timer" aria-hidden="true">
                 <div>
                     <strong data-days>000</strong>
                     <span>Days</span>
@@ -60,27 +73,43 @@ const formatter = new Intl.DateTimeFormat('en-SG', {
             </div>
         </div>
 
-        <button type="button" class="scroll-cue" data-scroll-cue aria-label="Scroll down for more">
+        <button
+            type="button"
+            class="scroll-cue"
+            data-scroll-cue
+            aria-label="Scroll down for more"
+        >
             <span class="scroll-cue-text">Scroll down</span>
-            <svg class="scroll-cue-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 5v14M5 12l7 7 7-7" />
+            <svg
+                class="scroll-cue-arrow"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <path d="M12 5v14M5 12l7 7 7-7"></path>
             </svg>
         </button>
     </section>
 </main>
 
 <script>
-    const countdown = document.querySelector('[data-countdown]');
+    const countdown = document.querySelector("[data-countdown]");
 
     if (countdown instanceof HTMLElement) {
-        const dates = JSON.parse(countdown.dataset.dates ?? '[]')
+        const dates = JSON.parse(countdown.dataset.dates ?? "[]")
             .map((date) => new Date(date))
             .filter((date) => !Number.isNaN(date.getTime()));
 
-        const days = countdown.querySelector('[data-days]');
-        const hours = countdown.querySelector('[data-hours]');
-        const minutes = countdown.querySelector('[data-minutes]');
-        const seconds = countdown.querySelector('[data-seconds]');
+        const days = countdown.querySelector("[data-days]");
+        const hours = countdown.querySelector("[data-hours]");
+        const minutes = countdown.querySelector("[data-minutes]");
+        const seconds = countdown.querySelector("[data-seconds]");
 
         const setText = (element, value) => {
             if (element) element.textContent = value;
@@ -88,13 +117,15 @@ const formatter = new Intl.DateTimeFormat('en-SG', {
 
         const updateCountdown = () => {
             const now = new Date();
-            const nextIndex = dates.findIndex((date) => date.getTime() > now.getTime());
+            const nextIndex = dates.findIndex(
+                (date) => date.getTime() > now.getTime(),
+            );
 
             if (nextIndex === -1) {
-                setText(days, '000');
-                setText(hours, '00');
-                setText(minutes, '00');
-                setText(seconds, '00');
+                setText(days, "000");
+                setText(hours, "00");
+                setText(minutes, "00");
+                setText(seconds, "00");
                 return;
             }
 
@@ -105,30 +136,39 @@ const formatter = new Intl.DateTimeFormat('en-SG', {
             const minuteValue = Math.floor((totalSeconds % 3600) / 60);
             const secondValue = totalSeconds % 60;
 
-            setText(days, String(dayValue).padStart(3, '0'));
-            setText(hours, String(hourValue).padStart(2, '0'));
-            setText(minutes, String(minuteValue).padStart(2, '0'));
-            setText(seconds, String(secondValue).padStart(2, '0'));
+            setText(days, String(dayValue).padStart(3, "0"));
+            setText(hours, String(hourValue).padStart(2, "0"));
+            setText(minutes, String(minuteValue).padStart(2, "0"));
+            setText(seconds, String(secondValue).padStart(2, "0"));
         };
 
         updateCountdown();
         window.setInterval(updateCountdown, 1000);
     }
 
-    const scrollCue = document.querySelector('[data-scroll-cue]');
-    const homePage = document.getElementById('home');
+    const scrollCue = document.querySelector("[data-scroll-cue]");
+    const homePage = document.getElementById("home");
+    const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     if (scrollCue instanceof HTMLElement && homePage) {
-        scrollCue.addEventListener('click', () => {
-            const nextSection = document.querySelector('#home ~ section');
-            nextSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollCue.addEventListener("click", () => {
+            const nextSection = document.querySelector("#home ~ section");
+            nextSection?.scrollIntoView({
+                behavior: prefersReducedMotion ? "auto" : "smooth",
+                block: "start",
+            });
         });
 
-        const cueObserver = new IntersectionObserver(([entry]) => {
-            scrollCue.classList.toggle('is-visible', entry.isIntersecting);
-        }, {
-            threshold: 0.95,
-        });
+        const cueObserver = new IntersectionObserver(
+            ([entry]) => {
+                scrollCue.classList.toggle("is-visible", entry.isIntersecting);
+            },
+            {
+                threshold: 0.95,
+            },
+        );
 
         cueObserver.observe(homePage);
     }

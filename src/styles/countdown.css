@@ -18,25 +18,24 @@ h1 {
 h1 img {
     max-width: 100%;
     width: 70%;
-    margin-bottom: -30px;
+    margin-bottom: -32px;
 }
 
 .venue {
     color: #fff;
-    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-size: clamp(1rem, 3vw, 1.5rem);
     font-weight: 700;
 }
 
 .date-tabs {
     text-align: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 
 .date-pill {
     display: grid;
-    gap: 6px;
-    border-radius: 8px;
+    gap: 8px;
     padding: 16px;
 }
 
@@ -58,9 +57,9 @@ h1 img {
     align-content: center;
     justify-content: center;
 
-    gap: 18px;
+    gap: 16px;
     border-radius: 8px;
-    padding: clamp(18px, 4vw, 14px);
+    padding: clamp(16px, 4vw, 32px);
     padding-top: 0;
 }
 
@@ -74,7 +73,7 @@ h1 img {
 .timer {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
+    gap: 8px;
 }
 
 .timer div {
@@ -82,9 +81,8 @@ h1 img {
     display: flex;
     flex-flow: column wrap;
     gap: 8px;
-    padding: 18px 10px;
+    padding: 16px 8px;
     border-radius: 8px;
-    /* background: rgba(255, 248, 237, 0.1); */
     text-align: center;
 }
 
@@ -96,14 +94,14 @@ h1 img {
 
 .timer span {
     color: #fff;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
 }
 
 .local-time {
     color: #fff;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     text-align: center;
 }
 
@@ -115,7 +113,7 @@ h1 img {
     display: flex;
     flex-flow: column;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     position: absolute;
     left: 50%;
     bottom: 8px;
@@ -124,7 +122,7 @@ h1 img {
     border: none;
     padding: 4px;
     color: #fff;
-    cursor: pointer;
+    cursor: inherit;
     opacity: 0;
     pointer-events: none;
     transition: opacity 300ms ease;
@@ -137,7 +135,7 @@ h1 img {
 }
 
 .scroll-cue-text {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -154,22 +152,22 @@ h1 img {
     }
 
     .venue {
-        font-size: 1.3em
+        font-size: 1.5rem;
     }
 
     .timer strong {
-        font-size: 3rem
+        font-size: 3rem;
     }
 
 
     .scroll-cue {
-        bottom: 18px;
+        bottom: 16px;
     }
 }
 
 @media (max-width: 767px) {
     .countdown-page {
-        padding: 24px 14px;
+        padding: 24px 16px;
     }
 
     .countdown-shell {
@@ -177,11 +175,11 @@ h1 img {
     }
 
     nav {
-        padding-left: 5px;
+        padding-left: 8px;
     }
 
     h1 img {
-        margin-bottom: -5px;
+        margin-bottom: -8px;
         width: 95%;
     }
 
@@ -222,6 +220,6 @@ h1 img {
     }
 
     50% {
-        transform: translateX(-50%) translateY(6px);
+        transform: translateX(-50%) translateY(8px);
     }
 }
