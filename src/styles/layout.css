@@ -220,7 +220,8 @@ section.countdown-shell {
 section#timeline {
     grid-template-columns: minmax(104px, 0.35fr) minmax(0, 1.5fr);
     width: min(1230px, calc(100% - max(18px, (100% - 940px) / 2)));
-    margin: 0 0 0 max(18px, calc((100% - 1089px) / 2));
+    /* margin: 0 0 0 max(18px, calc((100% - 1089px) / 2)); */
+    margin: 0 auto;
 }
 
 
