@@ -234,6 +234,12 @@ section#timeline {
     align-items: center;
 }
 
+@media only screen and (min-width: 1280px) {
+    .title-ko {
+        min-height: 660px;
+    }
+}
+
 @media (max-width: 1024px) {
     section {
         padding: clamp(56px, 9vh, 92px) 36px clamp(58px, 8vh, 82px);
