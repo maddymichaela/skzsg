@@ -1,25 +1,30 @@
 ---
 import '../styles/countdown.css';
 import headerLogo from '../assets/logo_header_with_world_tour.png';
+import { getEntry } from 'astro:content';
+
+const countdown = await getEntry('countdown', 'countdown');
+
+if (!countdown) {
+	throw new Error('Countdown settings not found. Add src/content/settings/countdown.json');
+}
 
 const tour = {
-city: 'Singapore',
-venue: 'Singapore Indoor Stadium',
-country: 'SG',
-timezone: 'Asia/Singapore',
-dates: ['2027-03-06T18:00:00+08:00', '2027-03-07T17:00:00+08:00'],
+	city: countdown.data.city,
+	timezone: countdown.data.timezone,
+	dates: countdown.data.dates,
 };
 
 const formatter = new Intl.DateTimeFormat('en-SG', {
-weekday: 'long',
-day: 'numeric',
-month: 'long',
-year: 'numeric',
-timeZone: tour.timezone,
+	weekday: 'long',
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+	timeZone: tour.timezone,
 });
 ---
 
-<main class="countdown-page">
+<main id="home" class="countdown-page">
     <section class="countdown-shell" aria-labelledby="countdown-title">
         <h1 id="countdown-title" title="RUN IT">
             <img class="static-glitch" src={headerLogo.src} alt="RUN IT">
@@ -54,6 +59,13 @@ timeZone: tour.timezone,
                 </div>
             </div>
         </div>
+
+        <button type="button" class="scroll-cue" data-scroll-cue aria-label="Scroll down for more">
+            <span class="scroll-cue-text">Scroll down</span>
+            <svg class="scroll-cue-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+        </button>
     </section>
 </main>
 
@@ -101,5 +113,23 @@ timeZone: tour.timezone,
 
         updateCountdown();
         window.setInterval(updateCountdown, 1000);
+    }
+
+    const scrollCue = document.querySelector('[data-scroll-cue]');
+    const homePage = document.getElementById('home');
+
+    if (scrollCue instanceof HTMLElement && homePage) {
+        scrollCue.addEventListener('click', () => {
+            const nextSection = document.querySelector('#home ~ section');
+            nextSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        const cueObserver = new IntersectionObserver(([entry]) => {
+            scrollCue.classList.toggle('is-visible', entry.isIntersecting);
+        }, {
+            threshold: 0.95,
+        });
+
+        cueObserver.observe(homePage);
     }
 </script>

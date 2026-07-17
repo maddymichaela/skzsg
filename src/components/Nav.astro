@@ -1,8 +1,108 @@
 ---
-import '../styles/nav.css';
-import logo from '../assets/skz_sg_logo.png';
+import "../styles/nav.css";
+import logo from "../assets/skz_sg_logo.png";
+import strokeIcon from "../assets/stroke.png";
+
+const menuItems = [
+    { label: "Home", href: "#home" },
+    // { label: "Goals", href: "#goals" },
+    { label: "Timeline", href: "#timeline" },
+    // { label: 'Goods', href: '#goods' },
+];
 ---
 
-<nav>
-    <img src={logo.src} alt="Stray Kids SG" class="logo">
+<nav class="site-nav" aria-label="Primary">
+    <a href="#home" class="logo-link" aria-label="Go to homepage">
+        <img src={logo.src} alt="Stray Kids SG" class="logo" />
+    </a>
+
+    <button
+        class="burger"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="site-nav-menu"
+    >
+        <span class="burger-icon-stack" aria-hidden="true">
+            <img
+                src={strokeIcon.src}
+                alt=""
+                class="burger-icon burger-icon-top"
+            />
+            <img
+                src={strokeIcon.src}
+                alt=""
+                class="burger-icon burger-icon-middle"
+            />
+            <img
+                src={strokeIcon.src}
+                alt=""
+                class="burger-icon burger-icon-bottom"
+            />
+        </span>
+    </button>
+
+    <div class="nav-menu" id="site-nav-menu" aria-label="Site navigation">
+        {
+            menuItems.map((item) => (
+                <a href={item.href} class="nav-link static-glitch">
+                    {item.label}
+                </a>
+            ))
+        }
+    </div>
 </nav>
+
+<script>
+    const nav = document.querySelector(".site-nav");
+    const button = nav?.querySelector(".burger");
+    const menu = nav?.querySelector(".nav-menu");
+    const links = menu?.querySelectorAll(".nav-link");
+
+    const closeMenu = () => {
+        nav?.classList.remove("is-open");
+        if (button instanceof HTMLButtonElement) {
+            button.setAttribute("aria-expanded", "false");
+            button.setAttribute("aria-label", "Open menu");
+            button.classList.remove("is-open");
+        }
+    };
+
+    const openMenu = () => {
+        nav?.classList.add("is-open");
+        if (button instanceof HTMLButtonElement) {
+            button.setAttribute("aria-expanded", "true");
+            button.setAttribute("aria-label", "Close menu");
+            button.classList.add("is-open");
+        }
+    };
+
+    button?.addEventListener("click", () => {
+        const isOpen = nav?.classList.contains("is-open");
+        if (isOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+
+    links?.forEach((link) => {
+        link.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("click", (event) => {
+        if (
+            event.target instanceof Node &&
+            nav &&
+            !nav.contains(event.target)
+        ) {
+            closeMenu();
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closeMenu();
+        }
+    });
+</script>

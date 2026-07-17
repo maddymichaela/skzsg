@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+
+const goodsItems = (await getCollection('goods')).filter((item) => item.data.available);
+---
+
+<style>
+    .goods-hero {
+        text-align: center;
+    }
+
+    .goods-list {
+        display: grid;
+        gap: 1.5rem;
+        list-style: none;
+        margin: 2rem auto 0;
+        max-width: 48rem;
+        padding: 0;
+    }
+
+    .goods-item {
+        display: grid;
+        gap: 0.75rem;
+    }
+
+    .goods-item img {
+        border-radius: 0.5rem;
+        max-width: 100%;
+    }
+
+    @media (max-width: 700px) {
+
+        .timeline-hero {
+            margin-bottom: 48px;
+        }
+    }
+</style>
+<section id="goods" class="goods-section">
+    <div class="goods-hero">
+        <h2 id="goods-title">Goods</h2>
+        {goodsItems.length === 0 ? (
+            <p>Coming Soon</p>
+        ) : (
+            <ul class="goods-list">
+                {goodsItems.map((item) => (
+                    <li class="goods-item">
+                        {item.data.image && (
+                            <img src={item.data.image} alt={item.data.name} loading="lazy" />
+                        )}
+                        <h3>{item.data.name}</h3>
+                        {item.data.description && <p>{item.data.description}</p>}
+                        {item.data.link && (
+                            <a class="static-glitch" href={item.data.link}>Learn more</a>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        )}
+    </div>
+</section>

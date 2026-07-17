@@ -1,16 +1,25 @@
 ---
 import '../styles/footer.css';
+import { getEntry } from 'astro:content';
+
+const footer = await getEntry('footer', 'footer');
+
+if (!footer) {
+	throw new Error('Footer settings not found. Add src/content/settings/footer.json');
+}
+
+const { social } = footer.data;
 ---
 
 <footer>
-    <a class="static-glitch" href="https://x.com/SKZ_SG" target="_blank" rel="noreferrer" aria-label="X">
+    <a class="static-glitch" href={social.x} target="_blank" rel="noreferrer" aria-label="X">
         <svg class="social-icon social-icon-fill" viewBox="0 0 24 24" role="img" aria-hidden="true">
             <path
                 d="M18.9 2h3.7l-8.1 9.2L24 22h-7.4l-5.8-6.8L4.2 22H.5l8.6-9.8L0 2h7.6l5.2 6.1L18.9 2Zm-1.3 18.1h2.1L6.5 3.8H4.3l13.3 16.3Z" />
         </svg>
     </a>
 
-    <a class="static-glitch" href="https://t.me/SKZ_SG" target="_blank" rel="noreferrer"
+    <a class="static-glitch" href={social.telegram} target="_blank" rel="noreferrer"
         aria-label="Telegram">
         <svg class="social-icon social-icon-fill" viewBox="0 0 24 24" role="img" aria-hidden="true">
             <path
@@ -18,7 +27,7 @@ import '../styles/footer.css';
         </svg>
     </a>
 
-    <a class="static-glitch" href="mailto:skzsgfanbase@gmail.com" aria-label="Email">
+    <a class="static-glitch" href={`mailto:${social.email}`} aria-label="Email">
         <svg class="social-icon social-icon-stroke" viewBox="0 0 24 24" role="img" aria-hidden="true">
             <rect x="3" y="5" width="18" height="14" rx="2" />
             <path d="m4 7 8 6 8-6" />

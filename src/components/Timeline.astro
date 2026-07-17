@@ -1,0 +1,557 @@
+---
+import '../styles/timeline.css';
+import storkImage from '../assets/stork.png';
+import brushDotImage from '../assets/brush_dot.png';
+import { getCollection } from 'astro:content';
+
+const timelineEntries = (await getCollection('timeline'))
+	.sort((a, b) => a.data.order - b.data.order);
+
+const timelineItems = timelineEntries.map((entry) => entry.data);
+
+const now = Date.now();
+const getTime = (date: string | undefined) => {
+	if (!date) return Number.NaN;
+
+	return new Date(date).getTime();
+};
+const isTimelineItemVisible = (item: (typeof timelineItems)[number], index: number) => {
+	const startTime = getTime(item.startDate);
+
+	return index === 0 || Number.isNaN(startTime) || startTime <= now;
+};
+const hasLockedTimelineItems = timelineItems.some((item, index) => !isTimelineItemVisible(item, index));
+---
+
+    <section id="timeline" class="timeline-section" aria-labelledby="timeline-title" style={`--timeline-marker-image:
+        url("${brushDotImage.src}")`}>
+        <div class="hero  timeline-hero">
+            <h2 class="mix-title" id="timeline-title">
+                <span class="title-ko">연대표</span>
+                <span class="title-en">Timeline</span>
+            </h2>
+        </div>
+
+        <div class="timeline-board" aria-label="Concert day timeline" data-timeline-board>
+            <img class="timeline-stork" src={storkImage.src} alt="" aria-hidden="true" />
+
+            <div class="timeline-zones" aria-label="Timeline navigation">
+                <button class="timeline-zone timeline-zone-left" type="button" data-timeline-prev
+                    aria-label="Previous timeline item"></button>
+                <button class="timeline-zone timeline-zone-right" type="button" data-timeline-next
+                    aria-label="Next timeline item"></button>
+            </div>
+
+            <ol class="timeline-list" data-timeline-list tabindex="0">
+                {timelineItems.map((item, index) => (
+                <li class="timeline-item" data-start-date={item.startDate} data-end-date={item.endDate}
+                    data-timeline-index={index} hidden={!isTimelineItemVisible(item, index)}>
+                    <div class="timeline-marker" aria-hidden="true"></div>
+                    <article class="timeline-copy">
+                        {(item.dateLabel) && (
+                        <p class="timeline-time">
+                            {item.dateLabel}
+                        </p>
+                        )}
+                        <h3>{item.title}</h3>
+                        {item.detail && (
+                        <p>{item.detail}</p>
+                        )}
+                        {item.link && (
+                        <a class="timeline-link static-glitch" href={item.link}>
+                            {item.linkLabel ?? 'Learn more'}
+                        </a>
+                        )}
+                    </article>
+                </li>
+                ))}
+                <li class="timeline-item" data-timeline-placeholder data-timeline-index={timelineItems.length}
+                    hidden={!hasLockedTimelineItems}>
+                    <div class="timeline-marker" aria-hidden="true"></div>
+                    <article class="timeline-copy">
+                        <h3>More Coming Soon</h3>
+                    </article>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <script>
+        const timelineList = document.querySelector('[data-timeline-list]');
+        const timelineBoard = document.querySelector('[data-timeline-board]');
+        const stork = timelineBoard?.querySelector('.timeline-stork');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const placeholderItem = document.querySelector('[data-timeline-placeholder]');
+        const previousButton = document.querySelector('[data-timeline-prev]');
+        const nextButton = document.querySelector('[data-timeline-next]');
+        let focusedIndex = 0;
+        let targetItem = null;
+        let targetResetTimer = 0;
+        let flightResetTimer = 0;
+        let scrollSettleTimer = 0;
+        let resizeSettleTimer = 0;
+        let lastScrollLeft = 0;
+        let flightStartScrollLeft = 0;
+        let flightTargetScrollLeft = 0;
+        let dragPointerId = null;
+        let dragStartX = 0;
+        let dragCurrentX = 0;
+        let dragStartIndex = 0;
+        let dragStartScrollLeft = 0;
+        let didDragTimeline = false;
+        let suppressTimelineClick = false;
+
+        const getVisibleTimelineItems = () => Array.from(timelineItems)
+            .filter((item) => item instanceof HTMLElement && !item.hidden);
+
+        const updateTimelineIndexes = () => {
+            getVisibleTimelineItems().forEach((item, index) => {
+                item.dataset.timelineIndex = String(index);
+            });
+        };
+
+        const updatePastTimelineItems = () => {
+            const now = new Date();
+
+            getVisibleTimelineItems().forEach((item) => {
+                const endDate = new Date(item.dataset.endDate ?? '');
+                const isPast = !Number.isNaN(endDate.getTime()) && endDate.getTime() < now.getTime();
+
+                item.classList.toggle('is-past', isPast);
+
+                const link = item.querySelector('.timeline-link');
+
+                if (link instanceof HTMLElement) {
+                    link.hidden = isPast;
+                }
+            });
+        };
+
+        const updateTimelineAvailability = () => {
+            const now = new Date();
+            let hasLockedItems = false;
+
+            timelineItems.forEach((item, index) => {
+                if (!(item instanceof HTMLElement) || item === placeholderItem) return;
+
+                const startDate = new Date(item.dataset.startDate ?? '');
+                const isLocked = index !== 0
+                    && !Number.isNaN(startDate.getTime())
+                    && startDate.getTime() > now.getTime();
+
+                item.hidden = isLocked;
+                hasLockedItems = hasLockedItems || isLocked;
+            });
+
+            if (placeholderItem instanceof HTMLElement) {
+                placeholderItem.hidden = !hasLockedItems;
+            }
+
+            updateTimelineIndexes();
+            updatePastTimelineItems();
+        };
+
+        const getTimelineItemScrollLeft = (item) => {
+            if (!(timelineList instanceof HTMLElement) || !(item instanceof HTMLElement)) return 0;
+
+            return Math.max(0, item.offsetLeft - ((timelineList.clientWidth - item.clientWidth) / 2));
+        };
+
+        const updateTimelineNavigationState = () => {
+            const visibleItems = getVisibleTimelineItems();
+            const isAtStart = focusedIndex <= 0;
+            const isAtEnd = focusedIndex >= visibleItems.length - 1;
+
+            if (previousButton instanceof HTMLElement) {
+                previousButton.setAttribute('aria-disabled', String(isAtStart));
+            }
+
+            if (nextButton instanceof HTMLElement) {
+                nextButton.setAttribute('aria-disabled', String(isAtEnd));
+            }
+
+        };
+
+        const getScrollArcLift = () => {
+            if (!(timelineList instanceof HTMLElement)) return 0;
+
+            const itemScrollPositions = getVisibleTimelineItems()
+                .map((item) => getTimelineItemScrollLeft(item));
+
+            const currentScrollLeft = timelineList.scrollLeft;
+
+            for (let index = 0; index < itemScrollPositions.length - 1; index += 1) {
+                const start = itemScrollPositions[index];
+                const end = itemScrollPositions[index + 1];
+
+                if (currentScrollLeft >= start && currentScrollLeft <= end) {
+                    const segmentDistance = end - start;
+                    const progress = segmentDistance > 0
+                        ? Math.max(0, Math.min(1, (currentScrollLeft - start) / segmentDistance))
+                        : 0;
+
+                    return Math.round(Math.sin(progress * Math.PI) * -34);
+                }
+            }
+
+            return 0;
+        };
+
+        const updateFocusedTimelineItem = () => {
+            if (!(timelineList instanceof HTMLElement) || !(timelineBoard instanceof HTMLElement) || !(stork instanceof HTMLElement)) {
+                return;
+            }
+
+            const listRect = timelineList.getBoundingClientRect();
+            const boardRect = timelineBoard.getBoundingClientRect();
+            const centerX = listRect.left + (listRect.width / 2);
+            let focusedItem = null;
+            let focusedMarker = null;
+            let shortestDistance = Number.POSITIVE_INFINITY;
+
+            getVisibleTimelineItems().forEach((item) => {
+                const marker = item.querySelector('.timeline-marker');
+                if (!(marker instanceof HTMLElement)) return;
+
+                const markerRect = marker.getBoundingClientRect();
+                const markerCenter = markerRect.left + (markerRect.width / 2);
+                const distance = Math.abs(markerCenter - centerX);
+                const dialPosition = Math.max(-1.35, Math.min(1.35, (markerCenter - centerX) / (listRect.width * 0.36)));
+                const dialDepth = Math.min(1, Math.abs(dialPosition));
+                const dialCopyY = Math.round(Math.pow(dialDepth, 1.25) * 22);
+                const dialScale = 1 - (dialDepth * 0.14);
+                const dialOpacity = Math.max(0.16, 1 - (dialDepth * 0.56));
+
+                item.style.setProperty('--dial-copy-y', `${dialCopyY}px`);
+                item.style.setProperty('--dial-scale', String(dialScale));
+                item.style.setProperty('--dial-opacity', String(dialOpacity));
+
+                item.classList.toggle('is-off-left', markerCenter < listRect.left + 20);
+
+                if (distance < shortestDistance) {
+                    shortestDistance = distance;
+                    focusedItem = item;
+                    focusedMarker = marker;
+                }
+            });
+
+            timelineItems.forEach((item) => {
+                if (item instanceof HTMLElement) {
+                    item.classList.toggle('is-focused', item === focusedItem);
+                }
+            });
+
+            if (focusedItem instanceof HTMLElement) {
+                focusedIndex = Number(focusedItem.dataset.timelineIndex ?? 0);
+            }
+
+            updateTimelineNavigationState();
+
+            const storkMarker = targetItem instanceof HTMLElement
+                ? targetItem.querySelector('.timeline-marker')
+                : focusedMarker;
+
+            if (storkMarker instanceof HTMLElement) {
+                const isTargetingItem = targetItem instanceof HTMLElement;
+                const markerRect = storkMarker.getBoundingClientRect();
+                const markerCenter = isTargetingItem
+                    ? centerX
+                    : markerRect.left + (markerRect.width / 2);
+                const totalFlightDistance = Math.abs(flightTargetScrollLeft - flightStartScrollLeft);
+                const currentFlightDistance = Math.abs(timelineList.scrollLeft - flightStartScrollLeft);
+                const flightProgress = totalFlightDistance > 0
+                    ? Math.max(0, Math.min(1, currentFlightDistance / totalFlightDistance))
+                    : 0;
+                const arcLift = isTargetingItem
+                    ? Math.round(Math.sin(flightProgress * Math.PI) * -34)
+                    : getScrollArcLift();
+
+                stork.style.setProperty('--stork-x', `${markerCenter - boardRect.left}px`);
+                stork.style.setProperty('--stork-y', `${Math.max(0, markerRect.top - boardRect.top - stork.offsetHeight + 12)}px`);
+                stork.style.setProperty('--stork-flight-lift', `${arcLift}px`);
+            }
+        };
+
+        const getStartTime = (item) => new Date(item.dataset.startDate ?? '').getTime();
+
+        const getEndTime = (item) => new Date(item.dataset.endDate ?? '').getTime();
+
+        const getUpcomingItem = () => {
+            const now = new Date().getTime();
+            const visibleItems = getVisibleTimelineItems();
+            const timelineEventItems = visibleItems.filter((item) => item !== placeholderItem);
+            const ongoingItems = timelineEventItems.filter((item) => {
+                const startTime = getStartTime(item);
+                const endTime = getEndTime(item);
+
+                return (Number.isNaN(startTime) || startTime <= now)
+                    && (Number.isNaN(endTime) || endTime >= now);
+            });
+
+            if (ongoingItems.length > 0) {
+                return ongoingItems.reduce((latestItem, item) => {
+                    const latestStartTime = getStartTime(latestItem);
+                    const startTime = getStartTime(item);
+
+                    return Number.isNaN(startTime) || startTime < latestStartTime ? latestItem : item;
+                });
+            }
+
+            return timelineEventItems.find((item) => {
+                const endDate = new Date(item.dataset.endDate ?? '');
+
+                return Number.isNaN(endDate.getTime()) || endDate.getTime() >= new Date().getTime();
+            }) ?? visibleItems.at(-1);
+        };
+
+        const focusUpcomingItem = () => {
+            const upcomingItem = getUpcomingItem();
+
+            if (!(timelineList instanceof HTMLElement) || !(upcomingItem instanceof HTMLElement)) return;
+
+            const scrollLeft = upcomingItem.offsetLeft - ((timelineList.clientWidth - upcomingItem.clientWidth) / 2);
+            timelineList.scrollLeft = Math.max(0, scrollLeft);
+            updateFocusedTimelineItem();
+        };
+
+        const playStorkFlight = (direction, duration = 260, useClassLift = true) => {
+            if (!(stork instanceof HTMLElement)) return;
+
+            window.clearTimeout(flightResetTimer);
+            stork.style.setProperty('--stork-flight-tilt', `${direction >= 0 ? 5 : -5}deg`);
+            if (useClassLift) {
+                stork.classList.add('is-flying');
+            }
+
+            flightResetTimer = window.setTimeout(() => {
+                stork.classList.remove('is-flying');
+                stork.style.setProperty('--stork-flight-tilt', '0deg');
+                if (!useClassLift) {
+                    stork.style.setProperty('--stork-flight-lift', '0px');
+                }
+            }, duration);
+        };
+
+        const scrollToTimelineItem = (item, direction = 0) => {
+            if (!(timelineList instanceof HTMLElement) || !(item instanceof HTMLElement)) return;
+
+            targetItem = item;
+            window.clearTimeout(targetResetTimer);
+
+            const scrollLeft = getTimelineItemScrollLeft(item);
+            flightStartScrollLeft = timelineList.scrollLeft;
+            flightTargetScrollLeft = scrollLeft;
+
+            if (direction !== 0) {
+                playStorkFlight(direction, 460, false);
+            }
+
+            timelineList.scrollTo({ left: flightTargetScrollLeft, behavior: 'smooth' });
+            updateFocusedTimelineItem();
+
+            targetResetTimer = window.setTimeout(() => {
+                targetItem = null;
+                stork?.style.setProperty('--stork-flight-lift', '0px');
+                updateFocusedTimelineItem();
+            }, 520);
+        };
+
+        const scrollByDirection = (direction) => {
+            const visibleItems = getVisibleTimelineItems();
+            const nextIndex = Math.max(0, Math.min(visibleItems.length - 1, focusedIndex + direction));
+            if (nextIndex === focusedIndex) return;
+
+            const nextItem = visibleItems[nextIndex];
+
+            scrollToTimelineItem(nextItem, nextIndex - focusedIndex);
+        };
+
+        const snapToNearestTimelineItem = () => {
+            if (!(timelineList instanceof HTMLElement)) return;
+
+            const visibleItems = getVisibleTimelineItems();
+            const nearestItem = visibleItems.reduce((nearest, item) => {
+                if (!(nearest instanceof HTMLElement) || !(item instanceof HTMLElement)) return item;
+
+                const nearestDistance = Math.abs(getTimelineItemScrollLeft(nearest) - timelineList.scrollLeft);
+                const itemDistance = Math.abs(getTimelineItemScrollLeft(item) - timelineList.scrollLeft);
+
+                return itemDistance < nearestDistance ? item : nearest;
+            }, visibleItems[0]);
+
+            if (nearestItem instanceof HTMLElement) {
+                const nextIndex = Number(nearestItem.dataset.timelineIndex ?? focusedIndex);
+                scrollToTimelineItem(nearestItem, nextIndex - focusedIndex);
+            }
+        };
+
+        const startTimelineDrag = (id, clientX) => {
+            if (!(timelineList instanceof HTMLElement)) return;
+
+            dragPointerId = id;
+            dragStartX = clientX;
+            dragCurrentX = clientX;
+            dragStartIndex = focusedIndex;
+            dragStartScrollLeft = timelineList.scrollLeft;
+            didDragTimeline = false;
+            targetItem = null;
+            window.clearTimeout(targetResetTimer);
+        };
+
+        const moveTimelineDrag = (id, clientX) => {
+            if (!(timelineList instanceof HTMLElement) || dragPointerId !== id) return false;
+
+            const dragDistance = clientX - dragStartX;
+            dragCurrentX = clientX;
+
+            if (Math.abs(dragDistance) > 4) {
+                didDragTimeline = true;
+                timelineList.classList.add('is-dragging');
+            }
+
+            if (!didDragTimeline) return false;
+
+            timelineList.scrollLeft = dragStartScrollLeft - (dragDistance * 1.35);
+            updateFocusedTimelineItem();
+            return true;
+        };
+
+        const finishTimelineDrag = () => {
+            if (!(timelineList instanceof HTMLElement) || dragPointerId === null) return;
+
+            const dragDistance = dragCurrentX - dragStartX;
+            timelineList.classList.remove('is-dragging');
+            dragPointerId = null;
+
+            if (didDragTimeline) {
+                const visibleItems = getVisibleTimelineItems();
+                const swipeThreshold = Math.min(52, Math.max(26, timelineList.clientWidth * 0.08));
+                const swipeDirection = Math.abs(dragDistance) >= swipeThreshold
+                    ? (dragDistance < 0 ? 1 : -1)
+                    : 0;
+
+                suppressTimelineClick = true;
+                if (swipeDirection !== 0) {
+                    const nextIndex = Math.max(0, Math.min(visibleItems.length - 1, dragStartIndex + swipeDirection));
+                    const nextItem = visibleItems[nextIndex];
+
+                    if (nextItem instanceof HTMLElement) {
+                        scrollToTimelineItem(nextItem, nextIndex - focusedIndex);
+                    }
+                } else {
+                    snapToNearestTimelineItem();
+                }
+
+                window.setTimeout(() => {
+                    suppressTimelineClick = false;
+                }, 250);
+            }
+        };
+
+        const stopTimelinePointerDrag = (event) => {
+            if (!(timelineList instanceof HTMLElement) || dragPointerId !== event.pointerId) return;
+
+            if (event.currentTarget instanceof HTMLElement) {
+                event.currentTarget.releasePointerCapture?.(event.pointerId);
+            }
+            finishTimelineDrag();
+        };
+
+        updateTimelineAvailability();
+        focusUpcomingItem();
+        timelineItems.forEach((item) => {
+            item.addEventListener('click', (event) => {
+                if (!(item instanceof HTMLElement)) return;
+                if (event.target instanceof Element && event.target.closest('.timeline-link')) return;
+
+                const nextIndex = Number(item.dataset.timelineIndex ?? focusedIndex);
+                scrollToTimelineItem(item, nextIndex - focusedIndex);
+            });
+        });
+        previousButton?.addEventListener('click', () => scrollByDirection(-1));
+        nextButton?.addEventListener('click', () => scrollByDirection(1));
+        if (timelineList instanceof HTMLElement) {
+            const timelineDragSurface = timelineBoard instanceof HTMLElement ? timelineBoard : timelineList;
+            lastScrollLeft = timelineList.scrollLeft;
+            timelineDragSurface.addEventListener('click', (event) => {
+                if (!suppressTimelineClick) return;
+
+                event.preventDefault();
+                event.stopPropagation();
+            }, true);
+            timelineDragSurface.addEventListener('pointerdown', (event) => {
+                if (
+                    event.button !== 0
+                    || event.target instanceof Element && event.target.closest('.timeline-link, .timeline-zone')
+                ) return;
+
+                startTimelineDrag(event.pointerId, event.clientX);
+                timelineDragSurface.setPointerCapture?.(event.pointerId);
+            });
+            timelineDragSurface.addEventListener('pointermove', (event) => {
+                if (moveTimelineDrag(event.pointerId, event.clientX)) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+            timelineDragSurface.addEventListener('pointerup', stopTimelinePointerDrag);
+            timelineDragSurface.addEventListener('pointercancel', stopTimelinePointerDrag);
+            timelineDragSurface.addEventListener('touchstart', (event) => {
+                if ('PointerEvent' in window) return;
+                if (
+                    event.touches.length !== 1
+                    || event.target instanceof Element && event.target.closest('.timeline-link, .timeline-zone')
+                ) return;
+
+                startTimelineDrag('touch', event.touches[0].clientX);
+            }, { passive: true });
+            timelineDragSurface.addEventListener('touchmove', (event) => {
+                if ('PointerEvent' in window) return;
+                if (event.touches.length !== 1) return;
+
+                if (moveTimelineDrag('touch', event.touches[0].clientX)) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+            timelineDragSurface.addEventListener('touchend', () => {
+                if ('PointerEvent' in window) return;
+                finishTimelineDrag();
+            });
+            timelineDragSurface.addEventListener('touchcancel', () => {
+                if ('PointerEvent' in window) return;
+                finishTimelineDrag();
+            });
+            timelineList.addEventListener('scroll', () => {
+                const direction = timelineList.scrollLeft >= lastScrollLeft ? 1 : -1;
+                lastScrollLeft = timelineList.scrollLeft;
+                playStorkFlight(direction, 180);
+
+                window.clearTimeout(scrollSettleTimer);
+                scrollSettleTimer = window.setTimeout(() => {
+                    if (!(targetItem instanceof HTMLElement)) {
+                        stork?.classList.remove('is-flying');
+                        stork?.style.setProperty('--stork-flight-tilt', '0deg');
+                    }
+                }, 140);
+
+                window.requestAnimationFrame(updateFocusedTimelineItem);
+            }, { passive: true });
+        }
+        window.addEventListener('resize', () => {
+            window.clearTimeout(resizeSettleTimer);
+            resizeSettleTimer = window.setTimeout(focusUpcomingItem, 120);
+            updateFocusedTimelineItem();
+        });
+        window.addEventListener('load', focusUpcomingItem);
+        window.setInterval(() => {
+            const focusedItemBeforeUpdate = getVisibleTimelineItems()[focusedIndex];
+
+            updateTimelineAvailability();
+
+            if (focusedItemBeforeUpdate instanceof HTMLElement && !focusedItemBeforeUpdate.hidden) {
+                updateFocusedTimelineItem();
+                return;
+            }
+
+            focusUpcomingItem();
+        }, 60000);
+    </script>
