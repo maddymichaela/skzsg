@@ -214,6 +214,7 @@ section.countdown-shell {
     height: 100dvh;
     max-height: 100%;
     gap: 6px;
+    margin: 0 auto;
 }
 
 section#timeline {
