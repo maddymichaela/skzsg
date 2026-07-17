@@ -28,7 +28,6 @@ body {
     width: 100%;
     height: 100%;
     cursor:
-        url("/cursors/orange_flower-cursor.svg") 18 18,
         url("/cursors/orange_flower_extended_cursor.png") 18 18, auto;
 }
 
