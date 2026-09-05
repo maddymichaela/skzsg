@@ -1,8 +1,10 @@
 {
   "title": "Banner Phrase Poll",
-  "dateLabel": "26 September - 10 October",
-  "detail": "Vote for your favourite phrase that will go on the banner",
-  "startDate": "2026-09-26T15:25:00+08:00",
-  "endDate": "2026-10-10T15:25:00+08:00",
-  "order": 2
+  "dateLabel": "5 - 12 September",
+  "detail": "Vote for your top two banner phrases!",
+  "startDate": "2026-09-05T16:10:00.000+08:00",
+  "endDate": "2026-09-12T15:25:00.000+08:00",
+  "order": 2,
+  "link": "https://bit.ly/skzsgb2",
+  "linkLabel": "Vote Now"
 }
