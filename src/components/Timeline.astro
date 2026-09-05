@@ -3,9 +3,7 @@ import "../styles/timeline.css";
 import storkImage from "../assets/stork.png";
 import brushDotImage from "../assets/brush_dot.png";
 import { getCollection } from "astro:content";
-import {
-    isTimelineEntryVisible,
-} from "../lib/timeline-visibility.js";
+import { isTimelineEntryVisible } from "../lib/timeline-visibility.js";
 
 const timelineEntries = (await getCollection("timeline")).sort(
     (a, b) => a.data.order - b.data.order,
@@ -42,10 +40,7 @@ const hasLockedTimelineItems = false;
             aria-hidden="true"
         />
 
-        <div
-            class="timeline-zones"
-            aria-hidden="true"
-        >
+        <div class="timeline-zones" aria-hidden="true">
             <button
                 class="timeline-zone timeline-zone-left"
                 type="button"
