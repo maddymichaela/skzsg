@@ -3,6 +3,9 @@ import "../styles/timeline.css";
 import storkImage from "../assets/stork.png";
 import brushDotImage from "../assets/brush_dot.png";
 import { getCollection } from "astro:content";
+import {
+    isTimelineEntryVisible,
+} from "../lib/timeline-visibility.js";
 
 const timelineEntries = (await getCollection("timeline")).sort(
     (a, b) => a.data.order - b.data.order,
@@ -10,23 +13,7 @@ const timelineEntries = (await getCollection("timeline")).sort(
 
 const timelineItems = timelineEntries.map((entry) => entry.data);
 
-const now = Date.now();
-const getTime = (date: string | undefined) => {
-    if (!date) return Number.NaN;
-
-    return new Date(date).getTime();
-};
-const isTimelineItemVisible = (
-    item: (typeof timelineItems)[number],
-    index: number,
-) => {
-    const startTime = getTime(item.startDate);
-
-    return index === 0 || Number.isNaN(startTime) || startTime <= now;
-};
-const hasLockedTimelineItems = timelineItems.some(
-    (item, index) => !isTimelineItemVisible(item, index),
-);
+const hasLockedTimelineItems = false;
 ---
 
 <section
@@ -89,7 +76,6 @@ const hasLockedTimelineItems = timelineItems.some(
                         data-start-date={item.startDate}
                         data-end-date={item.endDate}
                         data-timeline-index={index}
-                        hidden={!isTimelineItemVisible(item, index)}
                     >
                         <div class="timeline-marker" aria-hidden="true" />
                         <article class="timeline-copy">
